@@ -1,0 +1,76 @@
+.star-rating-widget {
+	border: 1px solid #c41200;
+	background-color: #FDFFCD;
+	padding: 10px;
+	float: left;
+	margin-right: 20px;
+}
+#star-rating {
+	overflow:hidden;
+	width: 460px;
+}
+div, ul, li, fieldset, p {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+	list-style:none;
+}
+#star-rating ul {
+	float: left;
+	background: url(stars_large_map.png) no-repeat 0 0;
+	height: 30px;
+}
+#star-rating li {
+	padding-right: 3px;
+	float: left;
+	height: 30px;
+	width: 30px;
+	overflow: hidden;
+}
+#star-rating input {
+	margin: 0;
+}
+#star-rating li input {
+	border: none;
+	margin: 0;
+	padding: 0;
+	width: 30px;
+	height: 30px;
+	-moz-opacity: 0;
+	opacity: 0;
+	filter: alpha(opacity=0);
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	cursor: pointer;
+}
+
+.ratingDesc {
+	font-style: italic;
+	padding-top: 15px;
+	overflow: hidden;
+	margin: 0;
+	width: 250px;
+	float: left;
+}
+#star-rating .stars-0 {
+	background-position: 0 0;
+}
+#star-rating .stars-1 {
+	background-position: 0 -36px;
+}
+#star-rating .stars-2 {
+	background-position: 0 -72px;
+}
+#star-rating .stars-3 {
+	background-position: 0 -108px;
+}
+#star-rating .stars-4 {
+	background-position: 0 -144px;
+}
+#star-rating .stars-5 {
+	background-position: 0 -180px;
+}

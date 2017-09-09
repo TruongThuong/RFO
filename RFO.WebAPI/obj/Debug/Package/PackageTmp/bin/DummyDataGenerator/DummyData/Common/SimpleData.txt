@@ -1,0 +1,40 @@
+﻿Học thứ mà bạn thích. Nếu ngôn ngữ lập trình bạn thích không hot sình sịch, cũng chẳng sao cả, đừng từ bỏ nó nhưng hãy học thêm ngôn ngữ khác, điều này giúp bạn có nhiều cơ hội việc làm hơn
+Bạn có 1 ý tưởng ứng dụng tuyệt vời điên rồ có thể thay đổi thế giới mà chúng ta đang biết? Hãy nghĩ tới lập trình iOS hoặc lập trình Android! 
+Điều quan trọng nhất là nếu bạn không hứng thú với những gì mình đang làm, bạn sẽ không thể tiến xa được.
+Hãy tìm ra cách học tốt nhất. Có nhiều cách như: đọc sách, học lập trình trực tuyến hay tham khảo thêm nhiều video. 
+Code mỗi ngày. Hãy thử dành 1-2 giờ cuối tuần để code, vì thực tế đã chứng minh nhiều khả năng bạn sẽ quên đi phần lớn những gì bạn đã học sau vài ngày. 
+Luyện tập là 1 trong những yếu tố quan trọng nhất – mặc dù bạn chỉ có 30 phút mỗi ngày để dành cho nó đi nữa, 30 phút đó vẫn tạo ra sự khác biệt lớn.
+Đừng quên những thứ cơ bản! Bắt đầu với những gì bạn yêu thích, nhưng khi bạn đã đến 1 điểm nào đó, hãy lùi lại 1 bước và học về những nguyên lý lập trình cơ bản, lập trình hướng đối tượng...
+Các khóa học tại MyClass.vn – Học lập trình trực tuyến hướng dẫn bạn chi tiết cụ thể, vừa thân thiện dành cho người mới mà còn lấy thực tiễn làm trọng tâm.
+Tò mò! Nếu bạn được nghe điều gì đó được giải thích quá sơ sài hoặc nếu bạn không hiểu nhiều về nó, hãy tìm hiểu trên google. Một trong những tính cách quan trọng nhất của 1 dev giỏi là tình thần “đói khát” muốn học hỏi.
+Hãy nhớ rằng, bạn không cần phải thuộc lòng mọi thứ, việc bug fix đã mệt mỏi lắm rồi, xin đừng tạo điều kiện thêm hại não. 
+Điều quan trọng chính là khả năng sử dụng những từ khóa đúng và đảm bảo bạn đã tìm kiếm đủ trước khi nghĩ đến việc đăng 1 câu hỏi trên Stack Overflow. 
+Bắt đầu dự án ngay từ ban đầu đến khi kết thúc. Không có cách học nào tốt hơn việc bạn đi hết quá trình phát triển 1 sản phẩm. 
+Dù đó là ý tưởng riêng của bản thân hay chỉ đơn giản là giúp bạn bè thì trải nghiệm tạo 1 website hoặc ứng dụng “đủ lông đủ cánh” 
+Khác với việc chỉ làm theo những ví dụ trong sách hoặc khóa học bạn đang theo sẽ dạy bạn nhiều hơn bất kì khóa học hay quyển sách nào.
+Tìm hiểu các lập trình viên khác, hãy tham dự những buổi meet-up càng nhiều càng tốt. Dù bạn chỉ là dev mới chập chững vào nghề hay đã tự tin với những kĩ năng của mình 
+Quan trọng nhất: hãy vui vẻ! Nếu bạn đang học viết code với tư tưởng bạn phải làm điều này thì bạn sẽ không bao giờ hoàn thành được. 
+Các ngôn ngữ và nền tảng thay đổi mỗi ngày, nên với vai trò là 1 developer, bạn phải không ngừng học hỏi. Nếu tận hưởng việc học code, bạn sẽ xiêu lòng với sự khích lệ tinh thần này 
+Lựa chọn tuỳ theo máy là một trong những cách chọn lựa văn bản của Wikipedia. Tại sao việc đó lại có ích cho trí não của bạn? 
+Mỗi ngày bạn đều có thể  sử dụng nó để chọn ra một chủ đề mới. Qwiki, một Wikipedia mê hoặc có hiệu quả trực giác phong phú, cũng là một công cụ rất hữu ích. 
+Khi còn học tiểu học, có thể bạn đã từng phải trải qua thử nghiệm tính nhanh các phép tính số học trong vòng 60 giây. 
+Đây là một cách tập luyện rất tốt mà đến giờ bạn vẫn hoàn toàn có thể áp dụng. Các con tính số học đơn giản hoàn toàn có thể giúp bạn rèn luyện trí não, giúp bạn tránh được thói quen ỷ lại vào máy tính.
+Chúng ta yêu bàn phím của chúng ta, bởi chúng cho ta hiệu quả tuyệt vời hơn nhiều so với chữ viết tay. Dù vậy, viết tay lại có tác dụng hỗ trợ nâng cao hiệu quả học tập
+Bạn có thể giả làm giáo viên của chính mình để các kĩ năng bạn đã học được càng thêm vững vàng. Bạn không nên chỉ chăm chú lo làm thế nào hoàn thành hết các công việc trước mắt
+Hãy thử giả vờ như mình đang dạy bản thân làm thế nào để có thể làm được chúng. Như vậy sẽ giúp bạn hồi tưởng lại được các thông tin cần thiết, tránh gặp phải các lỗi đáng tiếc.
+Kể lại một câu chuyện là cách rèn luyện trí não rất tốt. Nó khiến cho nội dung càng hấp dẫn hơn, các tình tiết càng trở nên dễ nhớ. 
+Điều đó giúp bạn tập trung tại điểm mà bạn muốn ghi nhớ nhất. Nhờ đó bạn có thể thông qua việc kể chuyện để rèn luyện trí nhớ. 
+Kể chuyện cũng đã được dùng làm phương pháp trị liệu cho bệnh Alzheimer. Nếu việc này có thể giúp các bệnh nhân Alzheimer cải thiện trí nhớ của họ
+Vận động và ăn uống điều độ, hợp lý sẽ giúp cho có thể và trí não của bạn luôn ở trạng thái tốt nhất. Nếu bạn không thích vận động, ăn uống lại không khoa học
+cơ thể bạn sẽ không thể khoẻ mạnh. Do đó mọi biện pháp nhằm duy trì trí não minh mẫn đều sẽ không hiệu quả.
+Vì công việc ít nhiều liên quan đến lập trình, công nghệ, do đó, tôi tham gia nhiều group FB và các diễn đàn để được học hỏi từ các tiền bối. 
+Việc tham gia này mang lại khá nhiều lợi ích như: tin quảng cáo tuyển dụng, tìm lập trình viên, hoặc có các đường link tới các bài viết, thủ thuật vô cùng bổ ích.
+Song, bên cạnh đó, 1 chuyện khiến tôi phải chán ngáy và bực mình đó là không ít các bạn post bài tập, nhờ giải giùm, hoặc post đề thi lên kèm dòng chữ 
+“Giúp em với em đang thi”. Từ khi còn là sinh viên, tôi đã bắt gặp, nay đi làm vẫn thấy nhan nhản, không thay đổi.
+Phải nói với cách học lập trình trên thật là cao siêu, tôi đây không tài nào theo được. Vì khi gặp bài tập khó, bạn bè tụm năm tụm ba lại giải thích, hướng dẫn
+Thảo luận với nhau có khi vẫn chưa thỏa được các thắc mắc, chưa hiểu. Còn đây, chịu khó ngồi gõ đề bài, chịu khó ngồi chờ run đùi 1 tý, rồi thánh nhân ở phương trời nào đó bay vào giải bài giúp.
+Các bạn nên thừa nhận 1 điều các group, diễn đàn là nơi để học hỏi, giao lưu kinh nghiệm chứ không phải là nơi giải bài tập chùa, giải bài hộ, vì không ai cho không ai thứ gì trong cuộc sống này cả
+Người ta cũng phải động não, tốn ít chất xám để giải bài cho bạn, còn bạn đang hưởng công sức lao động trí óc của người khác. 
+Không ít bạn tốt lắm dành thời gian, chất xám của mình để giải hộ bài cho người mình không quen biết…Bạn đang tự biến mình thành Google sống, tạo thành thói quen ỷ lại
+Thừa nhận thêm điều nữa, chẳng sai: Học lập trình ở Việt Nam rất chán. Năm đầu bạn sẽ phải nhồi vào đầu mớ kiến thức đại cương mà bạn không tài nhớ hết, về sau mới được học lập trình. 
+Số môn lập trình cũng rất ít, vì vậy bài tập, bài thi, đồ án cuối khóa là cơ hội để các bạn rèn luyện kĩ năng, luyện tư duy suy nghĩ. Hai trong số các kĩ năng quan trọng nhất của lập trình viên là: kỹ năng fix 

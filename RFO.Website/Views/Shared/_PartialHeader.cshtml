@@ -1,0 +1,179 @@
+﻿@using RFO.Common.Utilities.Localization
+@{
+    var translationManager = (ITranslationManager)this.Session["TranslationManager"];
+}
+<!-- // authorize // -->
+<div class="overlay"></div>
+<div class="autorize-popup">
+    <div class="autorize-tabs">
+        <a href="#" class="autorize-tab-a current">Sign in</a>
+        <a href="#" class="autorize-tab-b">Register</a>
+        <a href="#" class="autorize-close"></a>
+        <div class="clear"></div>
+    </div>
+    <section class="autorize-tab-content">
+        <div class="autorize-padding">
+            <h6 class="autorize-lbl">Welocome! Login in to Your Accont</h6>
+            <input type="text" value="" placeholder="Name">
+            <input type="text" value="" placeholder="Password">
+            <footer class="autorize-bottom">
+                <button class="authorize-btn">Login</button>
+                <a href="#" class="authorize-forget-pass">Forgot your password?</a>
+                <div class="clear"></div>
+            </footer>
+        </div>
+    </section>
+    <section class="autorize-tab-content">
+        <div class="autorize-padding">
+            <h6 class="autorize-lbl">Register for Your Account</h6>
+            <input type="text" value="" placeholder="Name">
+            <input type="text" value="" placeholder="Password">
+            <footer class="autorize-bottom">
+                <button class="authorize-btn">Registration</button>
+                <div class="clear"></div>
+            </footer>
+        </div>
+    </section>
+</div>
+<!-- \\ authorize \\-->
+
+<header id="top">
+    <div class="header-a">
+        <div class="wrapper-padding">
+            <div class="header-phone"><span>1 - 555 - 555 - 555</span></div>
+            <div class="header-account">
+                <a href="#">My account</a>
+            </div>
+            <div class="header-social">
+                <a href="#" class="social-twitter"></a>
+                <a href="#" class="social-facebook"></a>
+                <a href="#" class="social-vimeo"></a>
+                <a href="#" class="social-pinterest"></a>
+                <a href="#" class="social-instagram"></a>
+            </div>
+            <div class="header-viewed">
+                <a href="#" class="header-viewed-btn">recently viewed</a>
+                <!-- // viewed drop // -->
+                <div class="viewed-drop">
+                    <div class="viewed-drop-a">
+                        <!-- // -->
+                        <div class="viewed-item">
+                            <div class="viewed-item-l">
+                                <a href="#"><img alt="" src="@Url.Content("~/Templates/Home/img/v-item-01.jpg")" /></a>
+                            </div>
+                            <div class="viewed-item-r">
+                                <div class="viewed-item-lbl"><a href="#">Andrassy Thai Hotel</a></div>
+                                <div class="viewed-item-cat">location: thailand</div>
+                                <div class="viewed-price">152$</div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <!-- \\ -->
+                        <!-- // -->
+                        <div class="viewed-item">
+                            <div class="viewed-item-l">
+                                <a href="#"><img alt="" src="@Url.Content("~/Templates/Home/img/v-item-02.jpg")" /></a>
+                            </div>
+                            <div class="viewed-item-r">
+                                <div class="viewed-item-lbl"><a href="#">Ermin's Hotel</a></div>
+                                <div class="viewed-item-cat">location: dubai</div>
+                                <div class="viewed-price">300$</div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <!-- \\ -->
+                        <!-- // -->
+                        <div class="viewed-item">
+                            <div class="viewed-item-l">
+                                <a href="#"><img alt="" src="@Url.Content("~/Templates/Home/img/v-item-03.jpg")" /></a>
+                            </div>
+                            <div class="viewed-item-r">
+                                <div class="viewed-item-lbl"><a href="#">Best Western Hotel Reither</a></div>
+                                <div class="viewed-item-cat">location: berlin</div>
+                                <div class="viewed-price">2300$</div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <!-- \\ -->
+                    </div>
+                </div>
+                <!-- \\ viewed drop \\ -->
+            </div>
+            <div class="header-lang">
+                <a href="#"><img alt="" src="@Url.Content("~/Templates/Home/img/en.gif")" /></a>
+                <div class="langs-drop">
+                    <div><a href="#" class="langs-item en">english</a></div>
+                    <div><a href="#" class="langs-item fr">francais</a></div>
+                    <div><a href="#" class="langs-item de">deutsch</a></div>
+                    <div><a href="#" class="langs-item it">italiano</a></div>
+                </div>
+            </div>
+            <div class="header-curency">
+                <a href="#">USD</a>
+                <div class="curency-drop">
+                    <div><a href="#">usd</a></div>
+                    <div><a href="#">Eur</a></div>
+                    <div><a href="#">GBR</a></div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="header-b">
+        <!-- // mobile menu // -->
+        <div class="mobile-menu">
+            <nav>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">@translationManager.Translate("Home")</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Hotel")">@translationManager.Translate("Hotel")</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Promotion")">@translationManager.Translate("Promotion")</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Contact")">@translationManager.Translate("Contact")</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <!-- \\ mobile menu \\ -->
+
+        <div class="wrapper-padding">
+            <div class="header-logo"><a href="index-2.html"><img alt="" src="@Url.Content("~/Templates/Home/img/logo.png")" /></a></div>
+            <div class="header-right">
+                <div class="hdr-srch">
+                    <a href="#" class="hdr-srch-btn"></a>
+                </div>
+                <div class="hdr-srch-overlay">
+                    <div class="hdr-srch-overlay-a">
+                        <input type="text" value="" placeholder="@translationManager.Translate("SearchIndicator")">
+                        <a href="#" class="srch-close"></a>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="hdr-srch-devider"></div>
+                <a href="#" class="menu-btn"></a>
+                <nav class="header-nav">
+                    <ul>
+                        <li>
+                            <a href="@Url.Action("Index", "Home")">@translationManager.Translate("Home")</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Hotel")">@translationManager.Translate("Hotel")</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Promotion")">@translationManager.Translate("Promotion")</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Contact")">@translationManager.Translate("Contact")</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</header>

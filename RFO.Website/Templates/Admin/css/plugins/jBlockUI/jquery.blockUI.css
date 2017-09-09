@@ -1,0 +1,16 @@
+﻿.blockPage {
+    padding: 10px !important;
+}
+.blockui-loader {
+    display: table;
+    margin: 0 auto;
+}
+.blockui-loader img {
+    float: left;
+}
+.blockui-loader h1 {
+    float: left;
+    font-size: 14px;
+    margin-top: 6px !important;
+    margin-left: 15px !important;
+}

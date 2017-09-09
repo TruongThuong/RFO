@@ -1,0 +1,7 @@
+D:\Projects\RFO\SourceCode\RFO.MetaData\bin\RFO.MetaData.dll
+D:\Projects\RFO\SourceCode\RFO.MetaData\bin\RFO.MetaData.pdb
+D:\Projects\RFO\SourceCode\RFO.MetaData\bin\log4net.dll
+D:\Projects\RFO\SourceCode\RFO.MetaData\bin\log4net.xml
+D:\Projects\RFO\SourceCode\RFO.MetaData\obj\Debug\RFO.MetaData.dll
+D:\Projects\RFO\SourceCode\RFO.MetaData\obj\Debug\RFO.MetaData.pdb
+D:\Projects\RFO\SourceCode\RFO.MetaData\obj\Debug\RFO.MetaData.csprojResolveAssemblyReference.cache

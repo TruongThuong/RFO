@@ -1,0 +1,328 @@
+﻿@using RFO.Common.Utilities.Localization
+@using RFO.MetaData
+@model Int32
+@{
+    var productId = Model;
+    var translationManager = (ITranslationManager)this.Session["TranslationManager"];
+}
+
+<script type="text/javascript">
+
+    /**
+     * Provides APIs to get/set data in server side
+     */
+    var adminProductCRUD = new ajaxCrudJS();
+
+    /**
+     * Fix issue: CKEditor submitting empty content to the form.
+     */
+    function setCKContentFunc() {
+
+        // Set CK Description content
+        var description = CKEDITOR.instances['Description'].getData();
+        $('#Description').val(description);
+
+    };
+
+    /**
+     * Build update request context accoring serialized form values
+     */
+    function buildUpdateRequestContextFunc(formValues) {
+        var updateRequestContext = {
+            Record: {
+
+                Name: formValues["Name"],
+                MenuId: formValues["MenuId"],
+                Price: formValues["Price"],
+                BriefDescription: formValues["BriefDescription"],
+                Description: formValues["Description"],
+                Remark: formValues["Remark"],
+                Total: formValues["Total"],
+
+            }
+        };
+
+        if ('@productId' != '-1') {
+            updateRequestContext.Record.ProductId = formValues["ProductId"];
+        }
+
+        if (formValues["IsAvailable"] != null) { // Active
+            updateRequestContext.Record.IsAvailable = (formValues["IsAvailable"] == "on" ? true : false)
+        } else { // Deactive
+            updateRequestContext.Record.IsAvailable = false;
+        }
+        if (formValues["IsActive"] != null) { // Active
+            updateRequestContext.Record.IsActive = (formValues["IsActive"] == "on" ? true : false)
+        } else { // Deactive
+            updateRequestContext.Record.IsActive = false;
+        }
+        if (formValues["IsPopular"] != null) { // Active
+            updateRequestContext.Record.IsPopular = (formValues["IsPopular"] == "on" ? true : false)
+        } else { // Deactive
+            updateRequestContext.Record.IsPopular = false;
+        }
+        if (formValues["IsBestSeller"] != null) { // Active
+            updateRequestContext.Record.IsBestSeller = (formValues["IsBestSeller"] == "on" ? true : false)
+        } else { // Deactive
+            updateRequestContext.Record.IsBestSeller = false;
+        }
+
+        return updateRequestContext;
+    }
+
+    /**
+     * Register to update record
+     */
+    function registerUpdateRecord() {
+        // Using jquery validation plugin (jquery.validate.js) to validate
+        var updateType = adminProductCRUD.INSERT_UPDATE_TYPE;
+        var ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/Product/Insert";
+
+        // Determine update mode
+        if ('@productId' != '-1') {
+            updateType = adminProductCRUD.MODIFY_UPDATE_TYPE;
+            ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/Product/Update";
+        }
+
+        // Validation rules, using jquery validation plugin (jquery.validate.js) to validate
+        var validationRules = {
+
+            Name: { required: true, remote: { url: "@AppConstants.WebAPIAddressUrl" + "/Api/Product/IsNotExist" } }
+
+        };
+
+        // Validation messages
+        var validationMsgs = {
+
+            Name: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            Price: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            BriefDescription: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            Description: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            Remark: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            Total: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+
+        };
+
+        // Set parameters for updating
+        adminProductCRUD.setUpdateType(updateType);
+        adminProductCRUD.setAjaxUrl(ajaxUrl);
+        adminProductCRUD.setValidationRules(validationRules);
+        adminProductCRUD.setValidationMsgs(validationMsgs);
+        adminProductCRUD.setUpdateFrm($("#frmRecord"));
+        adminProductCRUD.setDlgModel($("#product-box-dlg"));
+        adminProductCRUD.setCKContentFunc(setCKContentFunc);
+        adminProductCRUD.setBuildUpdateRequestContextFunc(buildUpdateRequestContextFunc);
+        adminProductCRUD.setAddedRecordIdFunc(function (record) {
+            return record.ProductId;
+        });
+
+        // Update record
+        adminProductCRUD.onUpdateRecord();
+    };
+
+    /**
+     * Load Product detail
+     */
+    function loadProductDetail() {
+        $.ajax({
+            dataType: 'json',
+            url: "@AppConstants.WebAPIAddressUrl" + "/Api/Product/SelectByID",
+            type: "GET",
+            data: { id: "@productId" }
+        }).done(function () {
+        }).complete(function () {
+        }).success(function (response) {
+            if (response.Result) {
+                var record = response.Record;
+
+                $("#ProductId").val(record.ProductId);
+                $("#Name").val(record.Name);
+                $("#Price").val(record.Price);
+                $("#BriefDescription").val(record.BriefDescription);
+                $("#Remark").val(record.Remark);             
+
+                $("#IsAvailable").iCheck(record.IsAvailable ? 'check' : 'uncheck');
+                $("#IsActive").iCheck(record.IsActive ? 'check' : 'uncheck');
+                $("#IsPopular").iCheck(record.IsPopular ? 'check' : 'uncheck');
+                $("#IsBestSeller").iCheck(record.IsBestSeller ? 'check' : 'uncheck');
+                $("#Total").val(record.Total);
+
+                CKEDITOR.instances['Description'].setData(record.Description);
+
+
+                // Load Menu list
+                $("#SelectedMenuIds").val(record.MenuId);
+
+            } else {
+                app.logger.error(response.Description);
+            }
+        });
+    };
+
+    /**
+     * Load Menus
+     */
+    function loadMenus() {
+        var ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/Menu/SelectAll";
+        $.ajax({
+            dataType: 'json',
+            url: ajaxUrl,
+            type: "GET",
+        }).done(function () {
+        }).complete(function () {
+        }).success(function (response) {
+            if (response.Result) {
+                $.each(response.Records, function (i, record) {
+                    $("#MenuId").append('<option value="' + record.MenuId + '">' + record.Name + '</option>');
+                });
+                // Load selected criteria has been selected in the previous searching
+                var selectedMenuIds = $("#SelectedMenuIds").val().split(",");
+                $("#MenuId").select2("val", selectedMenuIds);
+            } else {
+                app.logger.error(response.Description);
+            }
+        });
+    };
+
+    $(document).ready(function () {
+
+        // Using iCheck plugin (jquery.icheck.min.js) to customize checkbox
+        icheck();
+
+        // Create CKEditor for Description
+        CKEDITOR.replace('Description');
+
+        // Format ProductId field
+        $("#ProductId").number(true, 0);
+        // Format MenuId field
+        $("#MenuId").number(true, 0);
+        // Format Price field
+        $("#Price").number(true, 0);
+
+        // Initialize Select2 on the elements that you want to make multiple selects
+        $("#MenuId").select2();
+
+        // Register to update record
+        registerUpdateRecord();
+
+        if ('@productId' != '-1') { // -1: Insert mode - otherwise: Update mode
+            setTimeout(function () { // Wait timeout to makesure all controls has been initialized
+                loadProductDetail();
+
+                loadMenus();
+
+            }, 500);
+        } else {
+            setTimeout(function () { // Wait timeout to makesure all controls has been initialized
+
+                loadMenus();
+
+            }, 500);
+        }
+    });
+
+</script>
+
+<form id="frmRecord" action="#" method="POST" class='form-horizontal form-bordered'>
+
+    @if (productId != -1)
+    {
+    <div class="control-group hidden">
+        <label for="ProductId" class="control-label">ID</label>
+        <div class="controls">
+            <input type="text" readonly="readonly" name="ProductId" id="ProductId" placeholder="..."
+                   class="input-xlarge" data-rule-required="true"
+                   value="@productId">
+        </div>
+    </div>
+    }
+    <div class="control-group">
+        <label for="Name" class="control-label">Name</label>
+        <div class="controls">
+            <input type="text" name="Name" id="Name" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="MenuId" class="control-label">Area</label>
+        <div class="controls">
+            <select name="MenuId" id="MenuId" class='select2-me input-xlarge'></select>
+            <input type="hidden" name="SelectedMenuIds" id="SelectedMenuIds" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="IsAvailable" class="control-label">Available Status</label>
+        <div class="controls">
+            <div class="check-line">
+                <input type="checkbox" name="IsAvailable" id="IsAvailable" class='icheck-me'
+                       data-skin="square" data-color="blue" />
+            </div>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="IsActive" class="control-label">Active Status</label>
+        <div class="controls">
+            <div class="check-line">
+                <input type="checkbox" name="IsActive" id="IsActive" class='icheck-me'
+                       data-skin="square" data-color="blue" />
+            </div>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="Price" class="control-label">Price</label>
+        <div class="controls">
+            <input type="text" name="Price" id="Price" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+    <div class="control-group hidden">
+        <label for="BriefDescription" class="control-label">Brief Description</label>
+        <div class="controls">
+            <textarea name="BriefDescription" id="BriefDescription" rows="4" class="input-block-level" required></textarea>
+        </div>
+    </div>
+    
+    @*<div class="control-group">
+        <label for="IsPopular" class="control-label">Popular</label>
+        <div class="controls">
+            <div class="check-line">
+                <input type="checkbox" name="IsPopular" id="IsPopular" class='icheck-me'
+                       data-skin="square" data-color="blue" />
+            </div>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="IsBestSeller" class="control-label">BestSeller</label>
+        <div class="controls">
+            <div class="check-line">
+                <input type="checkbox" name="IsBestSeller" id="IsBestSeller" class='icheck-me'
+                       data-skin="square" data-color="blue" />
+            </div>
+        </div>
+    </div>*@
+    <div class="control-group hidden">
+        <label for="Description" class="control-label">Description</label>
+        <div class="controls">
+            <textarea name="Description" id="Description" class="ckeditor span12" rows="10" required></textarea>
+        </div>
+    </div>
+    <div class="control-group hidden">
+        <label for="Remark" class="control-label">Remark</label>
+        <div class="controls">
+            <textarea name="Remark" id="Remark" rows="4" class="input-block-level" required></textarea>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="Total" class="control-label">Total</label>
+        <div class="controls">
+            <input type="text" name="Total" id="Total" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Thoát</button>
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
+    </div>
+</form>
+

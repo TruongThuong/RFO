@@ -1,0 +1,204 @@
+﻿@using RFO.Common.Utilities.Localization
+@using RFO.MetaData
+@model Int32
+@{
+    var menuId = Model;
+    var translationManager = (ITranslationManager)this.Session["TranslationManager"];
+}
+
+<script type="text/javascript">
+
+    /**
+     * Provides APIs to get/set data in server side
+     */
+    var adminMenuCRUD = new ajaxCrudJS();
+
+    /**
+     * Fix issue: CKEditor submitting empty content to the form.
+     */
+    function setCKContentFunc() {
+
+
+    };
+    
+    /**
+     * Build update request context accoring serialized form values
+     */
+    function buildUpdateRequestContextFunc(formValues) {
+        var updateRequestContext = {
+            Record: {
+
+                Name: formValues["Name"],
+                BriefDescription: formValues["BriefDescription"],
+                OrderIndex: formValues["OrderIndex"],
+
+            }
+        };
+
+        if ('@menuId' != '-1') {
+            updateRequestContext.Record.MenuId = formValues["MenuId"];
+        }
+
+        if (formValues["IsActive"] != null) { // Active
+            updateRequestContext.Record.IsActive = (formValues["IsActive"] == "on" ? true : false)
+        } else { // Deactive
+            updateRequestContext.Record.IsActive = false;
+        }
+
+        return updateRequestContext;
+    }
+
+    /**
+     * Register to update record
+     */
+    function registerUpdateRecord() {
+        // Using jquery validation plugin (jquery.validate.js) to validate
+        var updateType = adminMenuCRUD.INSERT_UPDATE_TYPE;
+        var ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/Menu/Insert";
+
+        // Determine update mode
+        if ('@menuId' != '-1') {
+            updateType = adminMenuCRUD.MODIFY_UPDATE_TYPE;
+            ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/Menu/Update";
+        }
+
+        // Validation rules, using jquery validation plugin (jquery.validate.js) to validate
+        var validationRules = {
+
+            Name: { required: true, remote: { url: "@AppConstants.WebAPIAddressUrl" + "/Api/Menu/IsNotExist" } }
+
+        };
+
+        // Validation messages
+        var validationMsgs = {
+
+            Name: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            BriefDescription: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            OrderIndex: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+
+        };
+
+        // Set parameters for updating
+        adminMenuCRUD.setUpdateType(updateType);
+        adminMenuCRUD.setAjaxUrl(ajaxUrl);
+        adminMenuCRUD.setValidationRules(validationRules);
+        adminMenuCRUD.setValidationMsgs(validationMsgs);
+        adminMenuCRUD.setUpdateFrm($("#frmRecord"));
+        adminMenuCRUD.setDlgModel($("#menu-box-dlg"));
+        adminMenuCRUD.setCKContentFunc(setCKContentFunc);
+        adminMenuCRUD.setBuildUpdateRequestContextFunc(buildUpdateRequestContextFunc);
+        adminMenuCRUD.setAddedRecordIdFunc(function (record) {
+            return record.MenuId;
+        });
+
+        // Update record
+        adminMenuCRUD.onUpdateRecord();
+    };
+
+    /**
+     * Load Menu detail
+     */
+    function loadMenuDetail() {
+        $.ajax({
+            dataType: 'json',
+            url: "@AppConstants.WebAPIAddressUrl" + "/Api/Menu/SelectByID",
+            type: "GET",
+            data: { id: "@menuId" }
+        }).done(function () {
+        }).complete(function () {
+        }).success(function (response) {
+            if (response.Result) {
+                var record = response.Record;
+
+                $("#MenuId").val(record.MenuId);
+                $("#Name").val(record.Name);
+                $("#BriefDescription").val(record.BriefDescription);
+                $("#OrderIndex").val(record.OrderIndex);
+
+                $("#IsActive").iCheck(record.IsActive ? 'check' : 'uncheck');
+
+
+
+            } else {
+                app.logger.error(response.Description);
+            }
+        });
+    };
+
+    $(document).ready(function () {
+
+        // Using iCheck plugin (jquery.icheck.min.js) to customize checkbox
+        icheck();
+
+
+        // Format MenuId field
+        $("#MenuId").number(true, 0);
+        // Format OrderIndex field
+        $("#OrderIndex").number(true, 0);
+
+        // Register to update record
+        registerUpdateRecord();
+
+        if ('@menuId' != '-1') { // -1: Insert mode - otherwise: Update mode
+            setTimeout(function () { // Wait timeout to makesure all controls has been initialized
+                loadMenuDetail();
+
+            }, 500);
+        } else {
+            setTimeout(function () { // Wait timeout to makesure all controls has been initialized
+
+            }, 500);
+        }
+    });
+
+</script>
+
+<form id="frmRecord" action="#" method="POST" class='form-horizontal form-bordered'>
+
+    @if (menuId != -1)
+    {
+    <div class="control-group hidden">
+        <label for="MenuId" class="control-label">ID</label>
+        <div class="controls">
+            <input type="text" readonly="readonly" name="MenuId" id="MenuId" placeholder="..."
+                   class="input-xlarge" data-rule-required="true"
+                   value="@menuId">
+        </div>
+    </div>
+    }
+    <div class="control-group">
+        <label for="Name" class="control-label">Name</label>
+        <div class="controls">
+            <input type="text" name="Name" id="Name" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="BriefDescription" class="control-label">Brief Description</label>
+        <div class="controls">
+            <textarea name="BriefDescription" id="BriefDescription" rows="4" class="input-block-level" required></textarea>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="IsActive" class="control-label">Status</label>
+        <div class="controls">
+            <div class="check-line">
+                <input type="checkbox" name="IsActive" id="IsActive" class='icheck-me'
+                       data-skin="square" data-color="blue" />
+            </div>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="OrderIndex" class="control-label">Order Index</label>
+        <div class="controls">
+            <input type="text" name="OrderIndex" id="OrderIndex" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</form>
+

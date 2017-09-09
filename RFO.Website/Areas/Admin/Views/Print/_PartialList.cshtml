@@ -1,0 +1,37 @@
+﻿@using RFO.Common.Utilities.Localization
+@using RFO.Common.Utilities.Pattern
+@using RFO.MetaData;
+@model dynamic
+@{
+    var tblRecordsId = "tblOrderDetailRecords";
+    var translationManager = (ITranslationManager)this.Session["TranslationManager"];
+}
+
+<script type="text/javascript">
+    var adminOrderDetailCRUD = new ajaxCrudJS();
+    var orderDetailDataTableWrapper = new jDataTableWapperJS();
+
+    $(document).ready(function(){
+
+
+
+
+
+
+    });
+</script>
+
+<table id="@tblRecordsId" class="table table-hover table-nomargin table-bordered dataTable-columnfilter dataTable">
+    <thead>
+        <tr>
+
+            <th>OrderDetailID</th>
+            <th class="hidden-350 hidden-480">OrderID</th>
+            <th class="hidden-350 hidden-480">Product</th>
+            <th class="hidden-350 hidden-480">Quantity</th>
+            <th class="hidden-350 hidden-480">Price</th>
+            <th class="hidden-350 hidden-480">Total</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>

@@ -1,0 +1,265 @@
+﻿@using RFO.Common.Utilities.Localization
+@using RFO.MetaData
+@model Int32
+@{
+    var orderId = Model;
+    var translationManager = (ITranslationManager)this.Session["TranslationManager"];
+}
+
+<script type="text/javascript">
+
+    /**
+     * Provides APIs to get/set data in server side
+     */
+    var adminOrderCRUD = new ajaxCrudJS();
+
+    /**
+     * Fix issue: CKEditor submitting empty content to the form.
+     */
+    function setCKContentFunc() {
+
+
+    };
+    
+    /**
+     * Build update request context accoring serialized form values
+     */
+    function buildUpdateRequestContextFunc(formValues) {
+        var updateRequestContext = {
+            Record: {
+
+                TableId: formValues["TableId"],
+                OrderStateId: formValues["OrderStateId"],
+                DeliveryNote: formValues["DeliveryNote"],
+                CreatedDate: formValues["CreatedDate"],
+
+            }
+        };
+
+        if ('@orderId' != '-1') {
+            updateRequestContext.Record.OrderId = formValues["OrderId"];
+        }
+
+
+        return updateRequestContext;
+    }
+
+    /**
+     * Register to update record
+     */
+    function registerUpdateRecord() {
+        // Using jquery validation plugin (jquery.validate.js) to validate
+        var updateType = adminOrderCRUD.INSERT_UPDATE_TYPE;
+        var ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/Order/Insert";
+
+        // Determine update mode
+        if ('@orderId' != '-1') {
+            updateType = adminOrderCRUD.MODIFY_UPDATE_TYPE;
+            ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/Order/Update";
+        }
+
+        // Validation rules, using jquery validation plugin (jquery.validate.js) to validate
+        var validationRules = {
+
+
+        };
+
+        // Validation messages
+        var validationMsgs = {
+
+            DeliveryNote: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+
+        };
+
+        // Set parameters for updating
+        adminOrderCRUD.setUpdateType(updateType);
+        adminOrderCRUD.setAjaxUrl(ajaxUrl);
+        adminOrderCRUD.setValidationRules(validationRules);
+        adminOrderCRUD.setValidationMsgs(validationMsgs);
+        adminOrderCRUD.setUpdateFrm($("#frmRecord"));
+        adminOrderCRUD.setDlgModel($("#order-box-dlg"));
+        adminOrderCRUD.setCKContentFunc(setCKContentFunc);
+        adminOrderCRUD.setBuildUpdateRequestContextFunc(buildUpdateRequestContextFunc);
+        adminOrderCRUD.setAddedRecordIdFunc(function (record) {
+            return record.OrderId;
+        });
+
+        // Update record
+        adminOrderCRUD.onUpdateRecord();
+    };
+
+    /**
+     * Load Order detail
+     */
+    function loadOrderDetail() {
+        $.ajax({
+            dataType: 'json',
+            url: "@AppConstants.WebAPIAddressUrl" + "/Api/Order/SelectByID",
+            type: "GET",
+            data: { id: "@orderId" }
+        }).done(function () {
+        }).complete(function () {
+        }).success(function (response) {
+            if (response.Result) {
+                var record = response.Record;
+
+                $("#OrderId").val(record.OrderId);
+                $("#DeliveryNote").val(record.DeliveryNote);
+                $("#CreatedDate").val(record.CreatedDate);
+
+
+
+
+                // Load Table list
+                $("#SelectedTableIds").val(record.TableId);
+
+                // Load OrderState list
+                $("#SelectedOrderStateIds").val(record.OrderStateId);
+
+            } else {
+                app.logger.error(response.Description);
+            }
+        });
+    };
+
+    /**
+     * Load Tables
+     */
+    function loadTables() {
+        var ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/Table/SelectAll";
+        $.ajax({
+            dataType: 'json',
+            url: ajaxUrl,
+            type: "GET",
+        }).done(function () {
+        }).complete(function () {
+        }).success(function (response) {
+            if (response.Result) {
+                $.each(response.Records, function (i, record) {
+                    $("#TableId").append('<option value="' + record.TableId + '">' + record.Name + '</option>');
+                });
+                // Load selected criteria has been selected in the previous searching
+                var selectedTableIds = $("#SelectedTableIds").val().split(",");
+                $("#TableId").select2("val", selectedTableIds);
+            } else {
+                app.logger.error(response.Description);
+            }
+        });
+    };
+
+    /**
+     * Load OrderStates
+     */
+    function loadOrderStates() {
+        var ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/OrderState/SelectAll";
+        $.ajax({
+            dataType: 'json',
+            url: ajaxUrl,
+            type: "GET",
+        }).done(function () {
+        }).complete(function () {
+        }).success(function (response) {
+            if (response.Result) {
+                $.each(response.Records, function (i, record) {
+                    $("#OrderStateId").append('<option value="' + record.OrderStateId + '">' + record.Name + '</option>');
+                });
+                // Load selected criteria has been selected in the previous searching
+                var selectedOrderStateIds = $("#SelectedOrderStateIds").val().split(",");
+                $("#OrderStateId").select2("val", selectedOrderStateIds);
+            } else {
+                app.logger.error(response.Description);
+            }
+        });
+    };
+
+    $(document).ready(function () {
+
+        // Using iCheck plugin (jquery.icheck.min.js) to customize checkbox
+        icheck();
+
+
+        // Format OrderId field
+        $("#OrderId").number(true, 0);
+        // Format TableId field
+        $("#TableId").number(true, 0);
+        // Format OrderStateId field
+        $("#OrderStateId").number(true, 0);
+
+        // Initialize Select2 on the elements that you want to make multiple selects
+        $("#TableId").select2();
+
+        // Initialize Select2 on the elements that you want to make multiple selects
+        $("#OrderStateId").select2();
+
+        // Register to update record
+        registerUpdateRecord();
+
+        if ('@orderId' != '-1') { // -1: Insert mode - otherwise: Update mode
+            setTimeout(function () { // Wait timeout to makesure all controls has been initialized
+                loadOrderDetail();
+
+                loadTables();
+
+                loadOrderStates();
+
+            }, 500);
+        } else {
+            setTimeout(function () { // Wait timeout to makesure all controls has been initialized
+
+                loadTables();
+
+                loadOrderStates();
+
+            }, 500);
+        }
+    });
+
+</script>
+
+<form id="frmRecord" action="#" method="POST" class='form-horizontal form-bordered'>
+
+    @if (orderId != -1)
+    {
+    <div class="control-group hidden">
+        <label for="OrderId" class="control-label">ID</label>
+        <div class="controls">
+            <input type="text" readonly="readonly" name="OrderId" id="OrderId" placeholder="..."
+                   class="input-xlarge" data-rule-required="true"
+                   value="@orderId">
+        </div>
+    </div>
+    }
+    <div class="control-group">
+        <label for="TableId" class="control-label">Table</label>
+        <div class="controls">
+            <select name="TableId" id="TableId" class='select2-me input-xlarge'></select>
+            <input type="hidden" name="SelectedTableIds" id="SelectedTableIds" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="OrderStateId" class="control-label">Order State</label>
+        <div class="controls">
+            <select name="OrderStateId" id="OrderStateId" class='select2-me input-xlarge'></select>
+            <input type="hidden" name="SelectedOrderStateIds" id="SelectedOrderStateIds" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="DeliveryNote" class="control-label">Delivery Note</label>
+        <div class="controls">
+            <textarea name="DeliveryNote" id="DeliveryNote" rows="4" class="input-block-level" required></textarea>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="CreatedDate" class="control-label">Created Date</label>
+        <div class="controls">
+            <input type="text" readonly="readonly" name="CreatedDate" id="CreatedDate" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</form>
+

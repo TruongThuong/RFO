@@ -1,0 +1,459 @@
+﻿<?xml version="1.0"?>
+<LanguageConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:noNamespaceSchemaLocation="file:///D:/Working_02/My%20work/Project/E-fab/deliverables/trunk/implementation/e-fab4.0/schema/Languages.xsd">
+    <LanguageEntries>
+        <!--Common messages-->
+        <LanguageEntry>
+            <ID>OrderDetailManagement</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Order Detail</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>Price</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Giá tiền</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>BriefDescription</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Mô tả ngắn gọn</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>Description</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Mô tả chi tiết</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>BriefIntroduction</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Giới thiệu ngắn gọn</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>Introduction</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Giới thiệu chi tiết</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>IsActive</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Kích hoạt?</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>Options</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Chức năng</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>DialogDetailTitle</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Details</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>DisplayDetail</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Xem chi tiết</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>Delete</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Xóa</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>Select</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Lựa chọn</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>InputRequired</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Thông tin này không được để trống</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>InputDuplicated</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Thông tin này đã tồn tại</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>ImageFile</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Hình ảnh</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>Image</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Hình ảnh</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>Comment</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Bình luận</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>Rating</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Đánh giá</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>AdvanceSearch</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Advance Search</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>Advance</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Advance</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>Basic</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Basic</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <!--Upload messages-->
+        <LanguageEntry>
+            <ID>UploadImage</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Upload Image</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>UploadIndicator</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Cho phép upload nhiều hình ảnh cùng 1 lúc</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>UploadCompleted</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Upload Completed</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <!--Jquery DataTable-->
+        <LanguageEntry>
+            <ID>sSearch</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value><![CDATA[<span>Search:</span> ]]></Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>sInfo</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value><![CDATA[Show <span>_START_</span> to <span>_END_</span> in total <span>_TOTAL_</span> line]]></Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>sLengthMenu</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value><![CDATA[_MENU_ <span>lines per page</span>]]></Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>sSearchKeyword</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Find...</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>sAddNew</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Add New</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>sAdvanceSearch</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Tìm kiếm nâng cao</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>sColVis</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Custom show</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <!--Management-->
+        <LanguageEntry>
+            <ID>RestaurantManagement</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Quản lý nhà hàng</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>MenuManagement</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Quản lý loại đồ ăn / thức uống</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>ProductManagement</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Quản lý đồ ăn / thức uống</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>RegionManagement</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Quản lý khu vực (lầu)</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>TableManagement</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Quản lý bàn</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>PromotionManagement</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Khuyến mãi</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>CommonInfoManagement</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Thông tin website</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>OrderManagement</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Quản lý hóa đơn</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>TableOrderManagement</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Order</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>ImageManagement</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Hình ảnh</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>UserManagement</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Quản lý nhân viên</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>Region</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Khu vực</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>Table</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Bàn</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>TableOrder</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Đặt bàn / Thanh toán</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>Menu</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Thực đơn</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>Product</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Đồ ăn / Thức uống</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>OrderState</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Trạng thái đơn hàng</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>Order</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Hóa đơn</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+        <LanguageEntry>
+            <ID>OrderIndex</ID>
+            <LanguageTexts>
+                <LanguageText>
+                    <LanguageCode>vi</LanguageCode>
+                    <Value>Thứ tự hiển thị</Value>
+                </LanguageText>
+            </LanguageTexts>
+        </LanguageEntry>
+    </LanguageEntries>
+</LanguageConfiguration>

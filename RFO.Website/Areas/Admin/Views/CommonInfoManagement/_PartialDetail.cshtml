@@ -1,0 +1,203 @@
+﻿@using RFO.Common.Utilities.Localization
+@using RFO.MetaData
+@model Int32
+@{
+    var commonInfoId = Model;
+    var translationManager = (ITranslationManager)this.Session["TranslationManager"];
+}
+
+<script type="text/javascript">
+
+    /**
+     * Provides APIs to get/set data in server side
+     */
+    var adminCommonInfoCRUD = new ajaxCrudJS();
+
+    /**
+     * Fix issue: CKEditor submitting empty content to the form.
+     */
+    function setCKContentFunc() {
+
+        // Set CK Description content 
+        var description = CKEDITOR.instances['Description'].getData();
+        $('#Description').val(description);
+
+    };
+    
+    /**
+     * Build update request context accoring serialized form values
+     */
+    function buildUpdateRequestContextFunc(formValues) {
+        var updateRequestContext = {
+            Record: {
+
+                CommonInfoCode: formValues["CommonInfoCode"],
+                Name: formValues["Name"],
+                BriefDescription: formValues["BriefDescription"],
+                Description: formValues["Description"],
+
+            }
+        };
+
+        if ('@commonInfoId' != '-1') {
+            updateRequestContext.Record.CommonInfoId = formValues["CommonInfoId"];
+        }
+
+
+        return updateRequestContext;
+    }
+
+    /**
+     * Register to update record
+     */
+    function registerUpdateRecord() {
+        // Using jquery validation plugin (jquery.validate.js) to validate
+        var updateType = adminCommonInfoCRUD.INSERT_UPDATE_TYPE;
+        var ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/CommonInfo/Insert";
+
+        // Determine update mode
+        if ('@commonInfoId' != '-1') {
+            updateType = adminCommonInfoCRUD.MODIFY_UPDATE_TYPE;
+            ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/CommonInfo/Update";
+        }
+
+        // Validation rules, using jquery validation plugin (jquery.validate.js) to validate
+        var validationRules = {
+
+            Name: { required: true, remote: { url: "@AppConstants.WebAPIAddressUrl" + "/Api/CommonInfo/IsNotExist" } }
+
+        };
+
+        // Validation messages
+        var validationMsgs = {
+
+            CommonInfoCode: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            Name: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            BriefDescription: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            Description: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+
+        };
+
+        // Set parameters for updating
+        adminCommonInfoCRUD.setUpdateType(updateType);
+        adminCommonInfoCRUD.setAjaxUrl(ajaxUrl);
+        adminCommonInfoCRUD.setValidationRules(validationRules);
+        adminCommonInfoCRUD.setValidationMsgs(validationMsgs);
+        adminCommonInfoCRUD.setUpdateFrm($("#frmRecord"));
+        adminCommonInfoCRUD.setDlgModel($("#commonInfo-box-dlg"));
+        adminCommonInfoCRUD.setCKContentFunc(setCKContentFunc);
+        adminCommonInfoCRUD.setBuildUpdateRequestContextFunc(buildUpdateRequestContextFunc);
+        adminCommonInfoCRUD.setAddedRecordIdFunc(function (record) {
+            return record.CommonInfoId;
+        });
+
+        // Update record
+        adminCommonInfoCRUD.onUpdateRecord();
+    };
+
+    /**
+     * Load CommonInfo detail
+     */
+    function loadCommonInfoDetail() {
+        $.ajax({
+            dataType: 'json',
+            url: "@AppConstants.WebAPIAddressUrl" + "/Api/CommonInfo/SelectByID",
+            type: "GET",
+            data: { id: "@commonInfoId" }
+        }).done(function () {
+        }).complete(function () {
+        }).success(function (response) {
+            if (response.Result) {
+                var record = response.Record;
+
+                $("#CommonInfoId").val(record.CommonInfoId);
+                $("#CommonInfoCode").val(record.CommonInfoCode);
+                $("#Name").val(record.Name);
+                $("#BriefDescription").val(record.BriefDescription);
+
+
+                CKEDITOR.instances['Description'].setData(record.Description);
+
+
+            } else {
+                app.logger.error(response.Description);
+            }
+        });
+    };
+
+    $(document).ready(function () {
+
+        // Using iCheck plugin (jquery.icheck.min.js) to customize checkbox
+        icheck();
+
+        // Create CKEditor for Description
+        CKEDITOR.replace('Description');
+
+        // Format CommonInfoId field
+        $("#CommonInfoId").number(true, 0);
+        // Format CommonInfoCode field
+        $("#CommonInfoCode").number(true, 0);
+
+        // Register to update record
+        registerUpdateRecord();
+
+        if ('@commonInfoId' != '-1') { // -1: Insert mode - otherwise: Update mode
+            setTimeout(function () { // Wait timeout to makesure all controls has been initialized
+                loadCommonInfoDetail();
+
+            }, 500);
+        } else {
+            setTimeout(function () { // Wait timeout to makesure all controls has been initialized
+
+            }, 500);
+        }
+    });
+
+</script>
+
+<form id="frmRecord" action="#" method="POST" class='form-horizontal form-bordered'>
+
+    @if (commonInfoId != -1)
+    {
+    <div class="control-group">
+        <label for="CommonInfoId" class="control-label">@translationManager.Translate("CommonInfoId")</label>
+        <div class="controls">
+            <input type="text" readonly="readonly" name="CommonInfoId" id="CommonInfoId" placeholder="..."
+                   class="input-xlarge" data-rule-required="true"
+                   value="@commonInfoId">
+        </div>
+    </div>
+    }
+    <div class="control-group">
+        <label for="CommonInfoCode" class="control-label">@translationManager.Translate("CommonInfoCode")</label>
+        <div class="controls">
+            <input type="text" name="CommonInfoCode" id="CommonInfoCode" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="Name" class="control-label">@translationManager.Translate("Name")</label>
+        <div class="controls">
+            <input type="text" name="Name" id="Name" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="BriefDescription" class="control-label">@translationManager.Translate("BriefDescription")</label>
+        <div class="controls">
+            <textarea name="BriefDescription" id="BriefDescription" rows="4" class="input-block-level" required></textarea>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="Description" class="control-label">@translationManager.Translate("Description")</label>
+        <div class="controls">
+            <textarea name="Description" id="Description" class="ckeditor span12" rows="10" required></textarea>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Thoát</button>
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
+    </div>
+</form>
+

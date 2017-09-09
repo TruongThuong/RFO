@@ -1,0 +1,127 @@
+﻿@using System.Web.UI.WebControls
+@using RFO.MetaData
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@AppConstants.AppName - @ViewBag.Title</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800&amp;amp;subset=latin,latin-ext' rel='stylesheet' type='text/css' id="googlefont">
+    <script type="text/javascript">
+        var CKEDITOR_BASEPATH = "@Url.Content("~/Templates/Admin/js/plugins/ckeditor/")";
+    </script>
+    @Styles.Render("~/bundles/fonts")
+    @Styles.Render("~/bundles/admincss")
+    @Scripts.Render("~/bundles/adminjs")
+</head>
+<body>
+    <div id="navigation">
+        <div class="container-fluid">
+            <a href="@Url.Action("Index", "Home", new { area = ""})"><img src="~/Templates/Admin/images/logo.jpg" width="50dp" height="50dp" /></a>
+            <a href="@Url.Action("Index", "TableOrderManagement")">
+                <font color="#ffffff" size="5">
+                    @AppConstants.AppName
+                </font>
+            </a>
+            <a href="#" class="toggle-nav" rel="tooltip" data-placement="bottom" title=""><i class="icon-reorder"></i></a>
+            <div class="user">
+                <ul class="icon-nav">
+                    <li class="dropdown sett">
+                        <a href="#" class='dropdown-toggle' data-toggle="dropdown"><i class="icon-cog"></i></a>
+                        <ul class="dropdown-menu pull-right theme-settings">
+                            <li>
+                                <span>Layout-width</span>
+                                <div class="version-toggle">
+                                    <a href="#" class='set-fixed'>Fixed</a>
+                                    <a href="#" class="active set-fluid">Fluid</a>
+                                </div>
+                            </li>
+                            <li>
+                                <span>Topbar</span>
+                                <div class="topbar-toggle">
+                                    <a href="#" class='set-topbar-fixed'>Fixed</a>
+                                    <a href="#" class="active set-topbar-default">Default</a>
+                                </div>
+                            </li>
+                            <li>
+                                <span>Sidebar</span>
+                                <div class="sidebar-toggle">
+                                    <a href="#" class='set-sidebar-fixed'>Fixed</a>
+                                    <a href="#" class="active set-sidebar-default">Default</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class='dropdown colo'>
+                        <a href="#" class='dropdown-toggle' data-toggle="dropdown"><i class="icon-tint"></i></a>
+                        <ul class="dropdown-menu pull-right theme-colors">
+                            <li class="subtitle">
+                                Predefined colors
+                            </li>
+                            <li>
+                                <span class='red'></span>
+                                <span class='orange'></span>
+                                <span class='green'></span>
+                                <span class="brown"></span>
+                                <span class="blue"></span>
+                                <span class='lime'></span>
+                                <span class="teal"></span>
+                                <span class="purple"></span>
+                                <span class="pink"></span>
+                                <span class="magenta"></span>
+                                <span class="grey"></span>
+                                <span class="darkblue"></span>
+                                <span class="lightred"></span>
+                                <span class="lightgrey"></span>
+                                <span class="satblue"></span>
+                                <span class="satgreen"></span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                @*<div class="dropdown">
+                    <a href="#" class='dropdown-toggle' data-toggle="dropdown">
+                        @currentUserName
+                        <img id="UserAvatarFile" alt="">
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li>
+                            <a onclick="@selectDetailUrlFunc">Chỉnh sửa tài khoản</a>
+                        </li>
+                        <li>
+                            <a onclick="@changePasswordUrlFunc">Đổi mật khẩu</a>
+                        </li>
+                        <li>
+                            @Html.ActionLink("Đăng xuất", "LogOff", "Account", new { Area = "" }, null)
+                        </li>
+                    </ul>
+                </div>*@
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="content">
+        <div id="left">
+            <!--Partial detail template-->
+            @Html.Partial("_PartialSidebar")
+        </div>
+        <div id="main">
+            @*<div class="container-fluid">
+                <div class="page-header">
+                    @*<div class="pull-right">
+                        <ul class="stats">
+                        </ul>
+                    </div>
+                </div>
+            </div>*@
+            <!--Render to other pages-->
+            @RenderBody()
+            
+            <!--Partial detail template-->
+            @Html.Partial("~/Areas/Admin/Views/Shared/_PartialBoxTemplate.cshtml")
+        </div>
+        
+    </div>
+</body>
+
+</html>

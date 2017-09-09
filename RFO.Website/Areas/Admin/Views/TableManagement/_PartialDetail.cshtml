@@ -1,0 +1,201 @@
+﻿@using RFO.Common.Utilities.Localization
+@using RFO.MetaData
+@model Int32
+@{
+    var tableId = Model;
+    var translationManager = (ITranslationManager)this.Session["TranslationManager"];
+}
+
+<script type="text/javascript">
+
+    /**
+     * Provides APIs to get/set data in server side
+     */
+    var adminTableCRUD = new ajaxCrudJS();
+
+    /**
+     * Fix issue: CKEditor submitting empty content to the form.
+     */
+    function setCKContentFunc() {
+
+
+    };
+    
+    /**
+     * Build update request context accoring serialized form values
+     */
+    function buildUpdateRequestContextFunc(formValues) {
+        var updateRequestContext = {
+            Record: {
+
+                Name: formValues["Name"],
+                Status: formValues["Status"],
+                BriefDescription: formValues["BriefDescription"],
+                NumSeat: formValues["NumSeat"],
+
+            }
+        };
+
+        if ('@tableId' != '-1') {
+            updateRequestContext.Record.TableId = formValues["TableId"];
+        }
+
+
+        return updateRequestContext;
+    }
+
+    /**
+     * Register to update record
+     */
+    function registerUpdateRecord() {
+        // Using jquery validation plugin (jquery.validate.js) to validate
+        var updateType = adminTableCRUD.INSERT_UPDATE_TYPE;
+        var ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/Table/Insert";
+
+        // Determine update mode
+        if ('@tableId' != '-1') {
+            updateType = adminTableCRUD.MODIFY_UPDATE_TYPE;
+            ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/Table/Update";
+        }
+
+        // Validation rules, using jquery validation plugin (jquery.validate.js) to validate
+        var validationRules = {
+
+            Name: { required: true, remote: { url: "@AppConstants.WebAPIAddressUrl" + "/Api/Table/IsNotExist" } }
+
+        };
+
+        // Validation messages
+        var validationMsgs = {
+
+            Name: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            Status: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            BriefDescription: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            NumSeat: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+
+        };
+
+        // Set parameters for updating
+        adminTableCRUD.setUpdateType(updateType);
+        adminTableCRUD.setAjaxUrl(ajaxUrl);
+        adminTableCRUD.setValidationRules(validationRules);
+        adminTableCRUD.setValidationMsgs(validationMsgs);
+        adminTableCRUD.setUpdateFrm($("#frmRecord"));
+        adminTableCRUD.setDlgModel($("#table-box-dlg"));
+        adminTableCRUD.setCKContentFunc(setCKContentFunc);
+        adminTableCRUD.setBuildUpdateRequestContextFunc(buildUpdateRequestContextFunc);
+        adminTableCRUD.setAddedRecordIdFunc(function (record) {
+            return record.TableId;
+        });
+
+        // Update record
+        adminTableCRUD.onUpdateRecord();
+    };
+
+    /**
+     * Load Table detail
+     */
+    function loadTableDetail() {
+        $.ajax({
+            dataType: 'json',
+            url: "@AppConstants.WebAPIAddressUrl" + "/Api/Table/SelectByID",
+            type: "GET",
+            data: { id: "@tableId" }
+        }).done(function () {
+        }).complete(function () {
+        }).success(function (response) {
+            if (response.Result) {
+                var record = response.Record;
+
+                $("#TableId").val(record.TableId);
+                $("#Name").val(record.Name);
+                $("#Status").val(record.Status);
+                $("#BriefDescription").val(record.BriefDescription);
+                $("#NumSeat").val(record.NumSeat);
+
+
+
+
+            } else {
+                app.logger.error(response.Description);
+            }
+        });
+    };
+
+    $(document).ready(function () {
+
+        // Using iCheck plugin (jquery.icheck.min.js) to customize checkbox
+        icheck();
+
+
+        // Format TableId field
+        $("#TableId").number(true, 0);
+        // Format Status field
+        $("#Status").number(true, 0);
+        // Format NumSeat field
+        $("#NumSeat").number(true, 0);
+
+        // Register to update record
+        registerUpdateRecord();
+
+        if ('@tableId' != '-1') { // -1: Insert mode - otherwise: Update mode
+            setTimeout(function () { // Wait timeout to makesure all controls has been initialized
+                loadTableDetail();
+
+            }, 500);
+        } else {
+            setTimeout(function () { // Wait timeout to makesure all controls has been initialized
+
+            }, 500);
+        }
+    });
+
+</script>
+
+<form id="frmRecord" action="#" method="POST" class='form-horizontal form-bordered'>
+
+    @if (tableId != -1)
+    {
+    <div class="control-group hidden">
+        <label for="TableId" class="control-label">ID</label>
+        <div class="controls">
+            <input type="text" readonly="readonly" name="TableId" id="TableId" placeholder="..."
+                   class="input-xlarge" data-rule-required="true"
+                   value="@tableId">
+        </div>
+    </div>
+    }
+    <div class="control-group">
+        <label for="Name" class="control-label">Name</label>
+        <div class="controls">
+            <input type="text" name="Name" id="Name" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="Status" class="control-label">Status</label>
+        <div class="controls">
+            <input type="text" name="Status" id="Status" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+    <div class="control-group hidden">
+        <label for="BriefDescription" class="control-label">Brief Description</label>
+        <div class="controls">
+            <textarea name="BriefDescription" id="BriefDescription" rows="4" class="input-block-level" required></textarea>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="NumSeat" class="control-label">Seat</label>
+        <div class="controls">
+            <input type="text" name="NumSeat" id="NumSeat" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</form>
+

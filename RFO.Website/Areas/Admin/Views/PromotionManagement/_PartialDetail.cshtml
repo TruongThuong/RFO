@@ -1,0 +1,252 @@
+﻿@using RFO.Common.Utilities.Localization
+@using RFO.MetaData
+@model Int32
+@{
+    var promotionId = Model;
+    var translationManager = (ITranslationManager)this.Session["TranslationManager"];
+}
+
+<script type="text/javascript">
+
+    /**
+     * Provides APIs to get/set data in server side
+     */
+    var adminPromotionCRUD = new ajaxCrudJS();
+
+    /**
+     * Fix issue: CKEditor submitting empty content to the form.
+     */
+    function setCKContentFunc() {
+
+        // Set CK Description content 
+        var description = CKEDITOR.instances['Description'].getData();
+        $('#Description').val(description);
+
+    };
+    
+    /**
+     * Build update request context accoring serialized form values
+     */
+    function buildUpdateRequestContextFunc(formValues) {
+        var updateRequestContext = {
+            Record: {
+
+                ImageFile: formValues["ImageFile"],
+                Title: formValues["Title"],
+                BriefDescription: formValues["BriefDescription"],
+                Description: formValues["Description"],
+                CreatedDate: formValues["CreatedDate"],
+
+            }
+        };
+
+        if ('@promotionId' != '-1') {
+            updateRequestContext.Record.PromotionId = formValues["PromotionId"];
+        }
+
+        if (formValues["IsActive"] != null) { // Active
+            updateRequestContext.Record.IsActive = (formValues["IsActive"] == "on" ? true : false)
+        } else { // Deactive
+            updateRequestContext.Record.IsActive = false;
+        }
+        if (formValues["IsPopular"] != null) { // Active
+            updateRequestContext.Record.IsPopular = (formValues["IsPopular"] == "on" ? true : false)
+        } else { // Deactive
+            updateRequestContext.Record.IsPopular = false;
+        }
+
+        return updateRequestContext;
+    }
+
+    /**
+     * Register to update record
+     */
+    function registerUpdateRecord() {
+        // Using jquery validation plugin (jquery.validate.js) to validate
+        var updateType = adminPromotionCRUD.INSERT_UPDATE_TYPE;
+        var ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/Promotion/Insert";
+
+        // Determine update mode
+        if ('@promotionId' != '-1') {
+            updateType = adminPromotionCRUD.MODIFY_UPDATE_TYPE;
+            ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/Promotion/Update";
+        }
+
+        // Validation rules, using jquery validation plugin (jquery.validate.js) to validate
+        var validationRules = {
+
+            Title: { required: true, remote: { url: "@AppConstants.WebAPIAddressUrl" + "/Api/Promotion/IsNotExist" } }
+
+        };
+
+        // Validation messages
+        var validationMsgs = {
+
+            Title: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            BriefDescription: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            Description: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+
+        };
+
+        // Set parameters for updating
+        adminPromotionCRUD.setUpdateType(updateType);
+        adminPromotionCRUD.setAjaxUrl(ajaxUrl);
+        adminPromotionCRUD.setValidationRules(validationRules);
+        adminPromotionCRUD.setValidationMsgs(validationMsgs);
+        adminPromotionCRUD.setUpdateFrm($("#frmRecord"));
+        adminPromotionCRUD.setDlgModel($("#promotion-box-dlg"));
+        adminPromotionCRUD.setCKContentFunc(setCKContentFunc);
+        adminPromotionCRUD.setBuildUpdateRequestContextFunc(buildUpdateRequestContextFunc);
+        adminPromotionCRUD.setAddedRecordIdFunc(function (record) {
+            return record.PromotionId;
+        });
+
+        // Update record
+        adminPromotionCRUD.onUpdateRecord();
+    };
+
+    /**
+     * Load Promotion detail
+     */
+    function loadPromotionDetail() {
+        $.ajax({
+            dataType: 'json',
+            url: "@AppConstants.WebAPIAddressUrl" + "/Api/Promotion/SelectByID",
+            type: "GET",
+            data: { id: "@promotionId" }
+        }).done(function () {
+        }).complete(function () {
+        }).success(function (response) {
+            if (response.Result) {
+                var record = response.Record;
+
+                $("#PromotionId").val(record.PromotionId);
+                $("#Title").val(record.Title);
+                $("#BriefDescription").val(record.BriefDescription);
+                $("#CreatedDate").val(record.CreatedDate);
+
+                $("#IsActive").iCheck(record.IsActive ? 'check' : 'uncheck');
+                $("#IsPopular").iCheck(record.IsPopular ? 'check' : 'uncheck');
+
+                CKEDITOR.instances['Description'].setData(record.Description);
+
+                $("#ImageFileSrc").attr("src", '@AppConstants.WebAPIAddressUrl' + '/Api/Promotion/GetImage?filename=' + record.ImageFile);
+
+            } else {
+                app.logger.error(response.Description);
+            }
+        });
+    };
+
+    $(document).ready(function () {
+
+        // Using iCheck plugin (jquery.icheck.min.js) to customize checkbox
+        icheck();
+
+        // Create CKEditor for Description
+        CKEDITOR.replace('Description');
+
+        // Format PromotionId field
+        $("#PromotionId").number(true, 0);
+
+        // Register to update record
+        registerUpdateRecord();
+
+        if ('@promotionId' != '-1') { // -1: Insert mode - otherwise: Update mode
+            setTimeout(function () { // Wait timeout to makesure all controls has been initialized
+                loadPromotionDetail();
+
+            }, 500);
+        } else {
+            setTimeout(function () { // Wait timeout to makesure all controls has been initialized
+
+            }, 500);
+        }
+    });
+
+</script>
+
+<form id="frmRecord" action="#" method="POST" class='form-horizontal form-bordered'>
+
+    @if (promotionId != -1)
+    {
+    <div class="control-group">
+        <label for="PromotionId" class="control-label">@translationManager.Translate("PromotionId")</label>
+        <div class="controls">
+            <input type="text" readonly="readonly" name="PromotionId" id="PromotionId" placeholder="..."
+                   class="input-xlarge" data-rule-required="true"
+                   value="@promotionId">
+        </div>
+    </div>
+    }
+    <div class="control-group">
+        <label for="ImageFile" class="control-label"></label>
+        <div class="controls">
+            <div class="fileupload fileupload-new" data-provides="fileupload">
+                <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
+                    <img id=ImageFileSrc name=ImageFileSrc alt="" />
+                </div>
+                <div class="fileupload-preview fileupload-exists thumbnail" 
+                     style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
+                <div>
+                    <span class="btn btn-file">
+                        <span class="fileupload-new">Lựa chọn hình ảnh</span>
+                        <span class="fileupload-exists">Thay đổi</span>
+                        <input type="file" name="ImageFile" id="ImageFile" />
+                    </span>
+                    <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Xóa</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="Title" class="control-label">@translationManager.Translate("Title")</label>
+        <div class="controls">
+            <input type="text" name="Title" id="Title" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="BriefDescription" class="control-label">@translationManager.Translate("BriefDescription")</label>
+        <div class="controls">
+            <textarea name="BriefDescription" id="BriefDescription" rows="4" class="input-block-level" required></textarea>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="IsActive" class="control-label">@translationManager.Translate("IsActive")</label>
+        <div class="controls">
+            <div class="check-line">
+                <input type="checkbox" name="IsActive" id="IsActive" class='icheck-me'
+                       data-skin="square" data-color="blue" />
+            </div>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="IsPopular" class="control-label">@translationManager.Translate("IsPopular")</label>
+        <div class="controls">
+            <div class="check-line">
+                <input type="checkbox" name="IsPopular" id="IsPopular" class='icheck-me'
+                       data-skin="square" data-color="blue" />
+            </div>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="Description" class="control-label">@translationManager.Translate("Description")</label>
+        <div class="controls">
+            <textarea name="Description" id="Description" class="ckeditor span12" rows="10" required></textarea>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="CreatedDate" class="control-label">@translationManager.Translate("CreatedDate")</label>
+        <div class="controls">
+            <input type="text" readonly="readonly" name="CreatedDate" id="CreatedDate" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Thoát</button>
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
+    </div>
+</form>
+

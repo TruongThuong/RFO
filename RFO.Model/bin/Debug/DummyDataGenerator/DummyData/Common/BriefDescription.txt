@@ -1,0 +1,36 @@
+﻿Thế mà, nhiều bạn đã bỏ lỡ, vì khi làm đồ án thường thì làm theo nhóm, vậy là 1 người làm cả nhóm cùng hưởng, ngay cả 1 chức năng đơn giản bạn cũng không tự viết được
+Nói về kỹ năng tự học, thời buổi công nghệ, cái gì không biết thì tra Google, đây cũng là câu cửa miệng khi hỏi bất cứ câu hỏi nào, tôi cũng nhận được cùng câu trả lời.
+Hỏi là một nghệ thuật…Thay vì post bài nhờ giải sao không giải thử với ý tưởng của mình? Khi không ra kết quả, post đề bài kèm theo phân tích, ý tưởng
+Cách làm của mình thì chắc hẳn không làm ai khó chịu, họ thấy sai họ sẽ sửa giúp bạn, ít nhất là vậy. Và đừng đặt niềm tin nhiều vào Google, copy đề bài rồi search đáp án!? 
+Bởi không phải những gì Google tìm kiếm cũng là đúng, do Google chỉ làm nhiệm vụ dẫn nguồn đến trang khác.
+Còn về fix bug, fix lỗi, với người tự học là cả 1 vấn đề vì tự mày mò rồi gặp lỗi… họ cũng ko biết lỗi đấy do đâu ra, tìm cách giải quyết ở đâu! 
+Càng không biết dùng từ khóa gì để search… Muốn nhờ kiểm tra code thì nên bỏ lên fiddle. Và sau khi được fix lỗi, hãy nhờ họ giải thích là lỗi gì, và cách giải quyết thế nào
+Trang StackOverflow – một trang web nổi tiếng thế giới về hỏi đáp với lượng thành viên đông đảo có thể trả lời hầu như mọi thắc mắc của bạn, nhất là trong những vấn đề lập trình. 
+Với 4.4 triệu người dùng và 9.7 triệu câu hỏi, stackoverflow.com được đánh giá là website hỏi đáp chuyên về Programming lớn nhất thế giới hiện tại. 
+Một lời khuyên dành cho bạn: Dành 20 phút đọc trang StackOverflow hàng ngày, đây được xem là khoản đầu tư hợp lý đem lại lợi nhuận khủng
+Như đã nói trên, thời đại công nghệ hiện đại, việc tự học nay đã dễ thở hơn nhiều, chỉ 1 cú click bạn có thể tìm thấy được nhiều câu trả lời. 
+Học từ sách, tài liệu, video hướng dẫn lập trình trong và ngoài nước. Về khoản ngoại ngữ, bạn chịu khó học nhé, học reading thôi cũng được
+Chỉ khi nào kỹ năng tự học nâng cao thì lười suy nghĩ và thói quen ỷ lại mới được dẹp bỏ. Cố gắng lên các bạn trẻ, lúc đầu có thể khó khăn nhưng về sau sẽ quen thôi
+Với 60 % thị phần trung bình, Android nghiễm nhiên trở thành hệ điều hành di động có thế lực bành trướng khắp thế giới.  
+Nhờ sự tăng trưởng tại các thị trường mới nổi như Mexico, Thổ Nhĩ Kỳ và Brazil, Android sẽ hứa hẹn mang đến những điều điều mới lạ, tuyệt vời trong tương lai
+Bạn thật sáng suốt nếu nghĩ rằng phát triển ứng dụng di động Android là một trong những ngành nghề thú vị nhất tại thời điểm này. 
+Nhưng làm thế nào để trở thành một lập trình viên Android? Vâng, bài viết hôm nay, sẽ đề cập cách để trở thành một nhà phát triển ứng dụng Android.
+Đầu tiên, nền tảng Android là mã nguồn mở ( mặc dù có một số phần mềm độc quyền như Google Play) tạo ra một hệ sinh thái các nhà phát triển tự do, sáng tạo, năng động.
+Thứ hai, là hệ điều hành dẫn đầu nên cộng đồng Android cũng vì thế có 1 lượng khá lớn, bạn có thể học hỏi được lời khuyên, thủ thuật và hướng dẫn trên cộng đồng người dùng Android
+Thứ ba, có sự hỗ trợ công cụ như Google Play Services cho những tác vụ ứng dụng phổ biến như đăng nhập, xác thực, vị trí (location) 
+Và lưu trữ từ ông lớn Google, các nhà phát triển Android có thể tập trung vào việc xây dựng các chức năng cốt lõi cho ứng dụng của họ.
+Đừng bàn đến là nên học ngôn ngữ nào, kỹ thuật gì, khóa học nào trong khi bạn chưa có đủ những kỹ năng mềm sau đây:
+Đam mê này sẽ dẫn dắt bạn đến sự kiên trì, quyết tâm không bỏ cuộc giữa chừng khi có thử thách, khó khăn. 
+Không có lòng đam mê, rất dễ bỏ cuộc giữa chừng có thể là lúc chưa thành nghề, ấy là lúc đang học kiến thức, nền tảng
+“Học, học nữa, học mãi” – đã bao lâu rồi bạn không nghe câu này? Đây chính là kim chỉ nam cho bạn, bất kể ngành nghề nào, nên cam kết học tập suốt đời. 
+Đặc biệt, công nghệ luôn thay đổi nhanh chóng, nếu không học hỏi cái mới, bạn sẽ tụt lại phía sau. Sự ra đời của các thiết bị wearable, các ứng dụng TV
+Các ứng dụng tự động, và nhiều hơn nữa, đây chính là động lực thúc đẩy các nhà phát triển di động phải luôn tích cực cập nhật những thay đổi và công nghệ mới cũng như các best practice. 
+“Học, học nữa, học mãi” theo đúng nghĩa của nó, dù có nhiều việc đến đâu, bạn đừng dừng việc học hỏi, khám phá, tìm tòi và đặt câu hỏi
+Không ai thành công 1 mình kể cả khi 1 mình bạn thực hiện 1 dự án. Việc hợp tác với các designer, marketer, hoặc những người quản lý ở cấp cao hơn là đều không tránh khỏi. 
+Làm việc theo nhóm cũng là cơ hội để bạn học hỏi ở các thành viên khác, ngoài ra hoạt động nhóm giúp phát huy khả năng phối hợp những bộ óc sáng tạo để đưa các quyết định đúng đắn.
+Để trở thành lập trình viên Android, bạn nên tận dụng khôn khéo triệt để các tài nguyên Android để nâng cao kỹ năng của họ, những thủ thuật và best practices. 
+Java chính là ngôn ngữ lập trình ứng dụng Android. Hãy tập làm quen với các khái niệm trong Java như vòng lặp, danh sách, biến và các cấu trúc điều khiển.
+Java là một trong những ngôn ngữ lập trình phổ biến nhất được sử dụng bởi các nhà phát triển phần mềm hiện nay, vì vậy việc thông thạo nó sẽ giúp bạn hoàn thành tốt công việc
+Ngoài ra Java còn rất hữu ích trong các lĩnh vực khác: Java Web applications, Trading Application, J2ME Apps, ứng dụng nhúng, ứng dụng giao dịch tân suất cao….
+Bên cạnh Java, bạn cần phải tìm hiểu những kiến thức cơ bản của SQL để tổ chức cơ sở dữ liệu trong các ứng dụng Android. 
+SQL là một ngôn ngữ để thực hiện các truy vấn lấy thông tin từ cơ sở dữ liệu. Một khi bạn có thể viết nó, thì sẽ không có bất kỳ câu hỏi nào mà bạn không thể truy vấn trong dữ liệu của mình.

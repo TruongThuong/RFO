@@ -1,0 +1,284 @@
+﻿@using RFO.Common.Utilities.Localization
+@using RFO.Common.Utilities.Pattern
+@using RFO.MetaData;
+@model dynamic
+@{
+    var selectUrl = AppConstants.WebAPIAddressUrl + "/Api/ProductImage/Select";
+    var deleteUrl = AppConstants.WebAPIAddressUrl + "/Api/ProductImage/Delete";
+    var selectDetailUrl = "/ProductImageManagement/SelectByID";
+    var tblRecordsId = "tblProductImageRecords";
+    var translationManager = (ITranslationManager)this.Session["TranslationManager"];
+
+    var productId = (int)Model.ProductId;
+
+}
+
+<script type="text/javascript">
+
+    /**
+     * Provides APIs to get/set data in server side
+     */
+    var adminProductImageCRUD = new ajaxCrudJS();
+    var productImageDataTableWrapper = new jDataTableWapperJS();
+
+    /**
+     * Function to display detail of selected item in server side using ajax
+     * Below data need to be set for using this function:
+     * + ajaxUrl: the URL which is corresponding with item will be selected
+     * + recordId: the record identifier
+     * + detailDlg: the jquery dialog instance will be shown as model
+     * + detailDlgBody: the jquery dialog instance keeps content returned from server side
+     * + srcTable: the table contains records
+     */
+    function displayProductImageDetail(ajaxUrl, recordId) {
+        var $clonedDlg = dialogManagerJS.tryGetDialog('productImage-box-dlg', 'admin-box-dlg');
+        $clonedDlg.find("#admin-box-title").text("@Html.Raw(translationManager.Translate("DialogDetailTitle"))");
+
+        // Set parameters for displaying record detail
+        adminProductImageCRUD.setAjaxUrl(ajaxUrl);
+        adminProductImageCRUD.setData({ id: recordId });
+        adminProductImageCRUD.setEnterUrlCallbackFunc(function (data) {
+            $clonedDlg.find("#admin-box-body").html(data); // Set content for dialog
+            dialogManagerJS.displayDialog($clonedDlg); // Display dialog
+        });
+
+        // Display record detail
+        adminProductImageCRUD.enterUrl();
+    };
+
+    /**
+     * Function to delete an record in server side using ajax
+     * Below data need to be set for using this function:
+     * + ajaxUrl: the URL which is corresponding with item will be selected
+     * + recordId: the record identifier
+     * + srcTable: the source table contains deleted record
+     */
+    function deleteProductImage(ajaxUrl, recordId) {
+        // Set parameters for deleting record
+        adminProductImageCRUD.setAjaxUrl(ajaxUrl);
+        adminProductImageCRUD.setData({ id: recordId });
+
+        // Delete record
+        adminProductImageCRUD.deleteRecord();
+    };
+    
+    /**
+     * Subscribe to receive the event has been raised when a record has been added
+     */
+    $.subscribe("RecordInsertedEvent", function (record) {
+        var jTbl = $("#@tblRecordsId").DataTable();
+        if (jTbl != null) {
+            jTbl.row.add(record).draw(false);
+        }
+    });
+
+    /**
+     * Subscribe to receive the event has been raised when a record has been updated
+     */
+    $.subscribe("RecordUpdatedEvent", function (record) {
+        var jTbl = $("#@tblRecordsId").DataTable();
+        if (jTbl != null) {
+            var row = jTbl.rows(function (idx, data, node) {
+                // Compare identifier
+                return data.ProductImageId == record.ProductImageId ? true : false;
+            });
+            if (row != null) {
+                // Send request to reload data in server side
+                // false: not reset paging
+                row.data(record).draw(false);
+            }
+        }
+    });
+
+    /**
+     * Subscribe to receive the event has been raised when a record has been deleted
+     */
+    $.subscribe("RecordDeletedEvent", function (recordId) {
+        var jTbl = $("#@tblRecordsId").DataTable();
+        if (jTbl != null) {
+            var row = jTbl.rows(function (idx, data, node) {
+                // Compare identifier
+                return data.ProductImageId == recordId ? true : false;
+            });
+            if (row != null) {
+                // Send request to reload data in server side
+                // false: not reset paging
+                row.remove().draw(false);
+            }
+        }
+    });
+
+    /**
+     * Initialize view
+     */
+    $(document).ready(function() {
+        // Defines parameters for data table initialization
+        var selectUrl = "@selectUrl";
+        var selectDetailUrl = "@selectDetailUrl";
+        var deleteUrl = "@deleteUrl";
+        var localizedMessages = {
+            "sSearch": "@Html.Raw(translationManager.Translate("sSearch"))",
+            "sInfo": "@Html.Raw(translationManager.Translate("sInfo"))",
+            "sLengthMenu": "@Html.Raw(translationManager.Translate("sLengthMenu"))",
+            "sSearchKeyword": "@Html.Raw(translationManager.Translate("sSearchKeyword"))",
+            "sAddNew": "@Html.Raw(translationManager.Translate("sAddNew"))",
+            "sAdvanceSearch": "@Html.Raw(translationManager.Translate("sAdvanceSearch"))",
+            "sColVis": "@Html.Raw(translationManager.Translate("sColVis"))"
+        };
+        var aoColumnDefs = [
+            {
+                "targets": [],
+                "visible": false
+            },
+            {
+                "targets": 5, // Options column
+                "render": function (data, type, row) {
+
+                    // Display detail
+                    return '<a onclick="displayProductImageDetail(\'' + selectDetailUrl + '\',' + row.ProductImageId +
+                        ')" class="btn" rel="tooltip" title="tle="@translationManager.Translate("DisplayDetail")"><i class="icon-search"></i></a>' +
+                            
+                        // Delete button
+                        '<a onclick="deleteProductImage(\'' + deleteUrl + '\',' + row.ProductImageId +
+                        ')" class="btn" rel="tooltip" title="@translationManager.Translate("Delete")"><i class="icon-remove"></i></a>'
+
+                        ;
+                }
+            },
+
+            {
+                "targets" : [0],
+                "render" : function(data, type, row) {
+                    return $.number(row.ProductImageId);
+                }
+            },
+            {
+                "targets" : [1],
+                "render" : function(data, type, row) {
+                    return row.Product.Name;
+                }
+            },
+            {
+                "targets" : [2],
+                "render" : function(data, type, row) {
+                    if (row.ImageFile == "") {
+                        row.ImageFile = "@AppConstants.NoImageFileName";
+                    }
+                    return '<a href="' + '@AppConstants.WebAPIAddressUrl' + '/Api/ProductImage/GetImage?filename=' + row.ImageFile + '" class="colorbox-image" rel="group-' + row.ProductId + '">' +
+                        '<img src="' + '@AppConstants.WebAPIAddressUrl' + '/Api/ProductImage/GetImage?filename=' + row.ImageFile + '&width=64&height=64"' + 'alt="Hình ảnh"/>' +
+                    '</a>';
+                }
+            },
+            {
+                "targets" : [3],
+                "render" : function(data, type, row) {
+                    return row.IsPresent;
+                }
+            },
+            {
+                "targets" : [4],
+                "render" : function(data, type, row) {
+                    return row.IsActive;
+                }
+            },
+
+
+        ];
+        var aoColumns = [
+
+            { "index" : [0], "mData" : "ProductImageId" },
+            { "index" : [1], "mData" : "Product.Name", "bSortable" : false, "sClass" : "hidden-350 hidden-480" },
+            { "index" : [2], "mData" : "ImageFile", "bSortable" : false, "sClass" : "hidden-350 hidden-480" },
+            { "index" : [3], "mData" : "IsPresent", "bSortable" : false, "sClass" : "hidden-350 hidden-480" },
+            { "index" : [4], "mData" : "IsActive", "bSortable" : false, "sClass" : "hidden-350 hidden-480" },
+            { "mData" : "ProductImageId", "bSortable" : false }
+        ];
+
+        var fnCreatedRow = function (nRow, aData, iDataIndex) {
+            // Create row-id attribute
+            $(nRow).attr("row-id", aData.ProductImageId);
+        };
+        
+        var fnDrawCallback = function () {
+
+
+
+        };
+
+        // Set parameters to initialize jquery datatable
+        productImageDataTableWrapper.setSelectUrl(selectUrl);
+
+        var uploadUrl = "/ProductImageManagement/EnterUploadProductImage";
+        productImageDataTableWrapper.setNeedDisplayAddNewBtn(true);
+        productImageDataTableWrapper.setAddNewFunctionJS('enterUploadProductImage(\'' + uploadUrl + '\')');
+
+        productImageDataTableWrapper.setLocalizedMessages(localizedMessages);
+        productImageDataTableWrapper.setSrcTable($("#@tblRecordsId"));
+        productImageDataTableWrapper.setAoColumns(aoColumns);
+        productImageDataTableWrapper.setAoColumnDefs(aoColumnDefs);
+        productImageDataTableWrapper.setFnCreatedRow(fnCreatedRow);
+        productImageDataTableWrapper.setFnDrawCallback(fnDrawCallback);
+        productImageDataTableWrapper.setNeedDisplayColVis(true);
+
+        // Set search foreign keys
+        var searchForeignKeys = [];
+        searchForeignKeys.push({key: 'ProductIds', value: '@productId'});
+        productImageDataTableWrapper.setSearchForeignKeys(searchForeignKeys);
+
+        // Two below options will be used for hierarchical category
+        // productImageDataTableWrapper.setDefaultDisplayLength(productImageDataTableWrapper.MAX_NUM_RETRIEVED_RECORD);
+        // productImageDataTableWrapper.setALengthProductImage([[productImageDataTableWrapper.MAX_NUM_RETRIEVED_RECORD], ["All"]]);
+        
+        // Create data table with options, column filters and localized messages
+        productImageDataTableWrapper.initJDataTable();
+    });
+
+    /**
+     * Function to display detail of selected item in server side using ajax
+     * Below data need to be set for using this function:
+     * + ajaxUrl: the URL which is corresponding with item will be selected
+     * + detailDlg: the jquery dialog instance will be shown as model
+     * + detailDlgBody: the jquery dialog instance keeps content returned from server side
+     */
+    function enterUploadProductImage(ajaxUrl) {
+        var $clonedDlg = dialogManagerJS.tryGetDialog('productImage-box-dlg', 'admin-box-dlg');
+        $clonedDlg.find("#admin-box-title").text("@Html.Raw(translationManager.Translate("UploadImage"))");
+
+        // Set parameters to enter upload image view
+        adminProductImageCRUD.setAjaxUrl(ajaxUrl);
+        adminProductImageCRUD.setData({ productId: @productId });
+        adminProductImageCRUD.setEnterUrlCallbackFunc(function (data) {
+            $clonedDlg.find("#admin-box-body").html(data); // Set content for dialog
+            dialogManagerJS.displayDialog($clonedDlg); // Display dialog
+        });
+
+        // Enter view to upload image
+        adminProductImageCRUD.enterUrl();
+    };
+
+    /**
+    * Subscribe to receive the event has been raised when uploading completed
+    */
+    $.subscribe("UploadCompletedEvent", function (filterConditions) {
+        var sAjaxSource = { "url": "@selectUrl" };
+        productImageDataTableWrapper.setAjaxSource("#@tblRecordsId", sAjaxSource);
+    });
+
+</script>
+
+<table id="@tblRecordsId" class="table table-hover table-nomargin table-bordered dataTable-columnfilter dataTable">
+    <thead>
+        <tr>
+
+            <th>@translationManager.Translate("ProductImageId")</th>
+            <th class="hidden-350 hidden-480">@translationManager.Translate("ProductId")</th>
+            <th class="hidden-350 hidden-480">@translationManager.Translate("ImageFile")</th>
+            <th class="hidden-350 hidden-480">@translationManager.Translate("IsPresent")</th>
+            <th class="hidden-350 hidden-480">@translationManager.Translate("IsActive")</th>
+
+            <th>@translationManager.Translate("Options")</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+

@@ -1,0 +1,258 @@
+﻿@using RFO.Common.Utilities.Localization
+@using RFO.Common.Utilities.Pattern
+@using RFO.MetaData;
+@model dynamic
+@{
+    var selectUrl = AppConstants.WebAPIAddressUrl + "/Api/Order/Select";
+    var deleteUrl = AppConstants.WebAPIAddressUrl + "/Api/Order/Delete";
+    var selectDetailUrl = "/OrderManagement/SelectByID";
+    var tblRecordsId = "tblOrderRecords";
+    var translationManager = (ITranslationManager)this.Session["TranslationManager"];
+
+
+
+}
+
+<script type="text/javascript">
+
+    /**
+     * Provides APIs to get/set data in server side
+     */
+    var adminOrderCRUD = new ajaxCrudJS();
+    var orderDataTableWrapper = new jDataTableWapperJS();
+
+    /**
+     * Function to display detail of selected item in server side using ajax
+     * Below data need to be set for using this function:
+     * + ajaxUrl: the URL which is corresponding with item will be selected
+     * + recordId: the record identifier
+     * + detailDlg: the jquery dialog instance will be shown as model
+     * + detailDlgBody: the jquery dialog instance keeps content returned from server side
+     * + srcTable: the table contains records
+     */
+    function displayOrderDetail(ajaxUrl, recordId) {
+        var $clonedDlg = dialogManagerJS.tryGetDialog('order-box-dlg', 'admin-box-dlg');
+        $clonedDlg.find("#admin-box-title").text("@Html.Raw(translationManager.Translate("DialogDetailTitle"))");
+
+        // Set parameters for displaying record detail
+        adminOrderCRUD.setAjaxUrl(ajaxUrl);
+        adminOrderCRUD.setData({ id: recordId });
+        adminOrderCRUD.setEnterUrlCallbackFunc(function (data) {
+            $clonedDlg.find("#admin-box-body").html(data); // Set content for dialog
+            dialogManagerJS.displayDialog($clonedDlg); // Display dialog
+        });
+
+        // Display record detail
+        adminOrderCRUD.enterUrl();
+    };
+
+
+    /**
+     * Function to delete an record in server side using ajax
+     * Below data need to be set for using this function:
+     * + ajaxUrl: the URL which is corresponding with item will be selected
+     * + recordId: the record identifier
+     * + srcTable: the source table contains deleted record
+     */
+    function deleteOrder(ajaxUrl, recordId) {
+        // Set parameters for deleting record
+        adminOrderCRUD.setAjaxUrl(ajaxUrl);
+        adminOrderCRUD.setData({ id: recordId });
+
+        // Delete record
+        adminOrderCRUD.deleteRecord();
+    };
+
+    /**
+     * Function to select ProductImage through Ajax request
+     * Below data need to be set for using this function:
+     * + ajaxUrl: the URL which is corresponding with item will be selected
+     * + recordId: the Product identifier
+     */
+    function viewOrderDetail(orderId) {
+        var $clonedDlg = dialogManagerJS.tryGetDialog('tableorder-box-dlg', 'admin-box-dlg');
+        $clonedDlg.find("#admin-box-title").text("@Html.Raw(translationManager.Translate("OrderDetailManagement"))");
+
+        // Set parameters for displaying record detail
+        adminOrderCRUD.setAjaxUrl("/OrderDetailManagement/EnterSelectByOrderId");
+        adminOrderCRUD.setData({ orderId: orderId });
+        adminOrderCRUD.setEnterUrlCallbackFunc(function (data) {
+            $clonedDlg.find("#admin-box-body").html(data); // Set content for dialog
+            dialogManagerJS.displayDialog($clonedDlg); // Display dialog
+        });
+
+        // Display ProductImage view
+        adminOrderCRUD.enterUrl();
+    };
+
+    /**
+     * Subscribe to receive the event has been raised when a record has been added
+     */
+    $.subscribe("RecordInsertedEvent", function (record) {
+        var jTbl = $("#@tblRecordsId").DataTable();
+        if (jTbl != null) {
+            jTbl.row.add(record).draw(false);
+        }
+    });
+
+    /**
+     * Subscribe to receive the event has been raised when a record has been updated
+     */
+    $.subscribe("RecordUpdatedEvent", function (record) {
+        var jTbl = $("#@tblRecordsId").DataTable();
+        if (jTbl != null) {
+            var row = jTbl.rows(function (idx, data, node) {
+                // Compare identifier
+                return data.OrderId == record.OrderId ? true : false;
+            });
+            if (row != null) {
+                // Send request to reload data in server side
+                // false: not reset paging
+                row.data(record).draw(false);
+            }
+        }
+    });
+
+    /**
+     * Subscribe to receive the event has been raised when a record has been deleted
+     */
+    $.subscribe("RecordDeletedEvent", function (recordId) {
+        var jTbl = $("#@tblRecordsId").DataTable();
+        if (jTbl != null) {
+            var row = jTbl.rows(function (idx, data, node) {
+                // Compare identifier
+                return data.OrderId == recordId ? true : false;
+            });
+            if (row != null) {
+                // Send request to reload data in server side
+                // false: not reset paging
+                row.remove().draw(false);
+            }
+        }
+    });
+
+    /**
+     * Initialize view
+     */
+    $(document).ready(function () {
+        // Defines parameters for data table initialization
+        var selectUrl = "@selectUrl";
+        var selectDetailUrl = "@selectDetailUrl";
+        var deleteUrl = "@deleteUrl";
+        var localizedMessages = {
+            "sSearch": "@Html.Raw(translationManager.Translate("sSearch"))",
+            "sInfo": "@Html.Raw(translationManager.Translate("sInfo"))",
+            "sLengthMenu": "@Html.Raw(translationManager.Translate("sLengthMenu"))",
+            "sSearchKeyword": "@Html.Raw(translationManager.Translate("sSearchKeyword"))",
+            "sAddNew": "@Html.Raw(translationManager.Translate("sAddNew"))",
+            "sAdvanceSearch": "@Html.Raw(translationManager.Translate("sAdvanceSearch"))",
+            "sColVis": "@Html.Raw(translationManager.Translate("sColVis"))"
+        };
+        var aoColumnDefs = [
+            {
+                "targets": [0],
+                "visible": false
+            },
+            {
+                "targets": 4, // Options column
+                "render": function (data, type, row) {
+                    //    '<a onclick="displayOrderDetail(\'' + selectDetailUrl + '\',' + row.OrderId +
+                    //    ')" class="btn" rel="tooltip" title="Display Detail"><i class="icon-search"></i></a>'
+                    return '<a onclick="viewOrderDetail(' + row.OrderId +
+                           ')" class="btn" rel="tooltip" title="Order Detail"><i class="icon-book"></i></a>' +
+                           '<a onclick="viewOrderDetail(' + row.OrderId +
+                            ')" class="btn" rel="tooltip" title="Print"><i class="icon-print"></i></a>' +
+                           '<a onclick="deleteOrder(\'' + deleteUrl + '\',' + row.OrderId +
+                           ')" class="btn" rel="tooltip" title="Delete"><i class="icon-remove"></i></a>'
+                    ;
+                }
+            },
+
+            {
+                "targets": [0],
+                "render": function (data, type, row) {
+                    return $.number(row.OrderId);
+                }
+            },
+            {
+                "targets": [1],
+                "render": function (data, type, row) {
+                    return row.Table.Name;
+                }
+            },
+            {
+                "targets": [2],
+                "render": function (data, type, row) {
+                    return row.OrderState.Name;
+                }
+            },
+            {
+                "targets": [3],
+                "render": function (data, type, row) {
+                    return $.format.date(row.CreatedDate, 'HH:mm dd/MM/yyyy');;
+                }
+            },
+
+
+        ];
+        var aoColumns = [
+
+            { "index": [0], "mData": "OrderId" },
+            { "index": [1], "mData": "Table.Name", "bSortable": false, "sClass": "hidden-350 hidden-480" },
+            { "index": [2], "mData": "OrderState.Name", "bSortable": false, "sClass": "hidden-350 hidden-480" },
+            { "index": [3], "mData": "CreatedDate", "bSortable": false, "sClass": "hidden-350 hidden-480" },
+            { "mData": "OrderId", "bSortable": false }
+        ];
+
+        var fnCreatedRow = function (nRow, aData, iDataIndex) {
+            // Create row-id attribute
+            $(nRow).attr("row-id", aData.OrderId);
+        };
+
+        var fnDrawCallback = function () {
+
+
+
+        };
+
+        // Set parameters to initialize jquery datatable
+        orderDataTableWrapper.setSelectUrl(selectUrl);
+
+        orderDataTableWrapper.setNeedDisplayAddNewBtn(true);
+        orderDataTableWrapper.setAddNewFunctionJS('displayOrderDetail(\'' + selectDetailUrl + '\', -1)');
+
+        orderDataTableWrapper.setLocalizedMessages(localizedMessages);
+        orderDataTableWrapper.setSrcTable($("#@tblRecordsId"));
+        orderDataTableWrapper.setAoColumns(aoColumns);
+        orderDataTableWrapper.setAoColumnDefs(aoColumnDefs);
+        orderDataTableWrapper.setFnCreatedRow(fnCreatedRow);
+        orderDataTableWrapper.setFnDrawCallback(fnDrawCallback);
+        orderDataTableWrapper.setNeedDisplayColVis(false);
+
+
+
+        // Two below options will be used for hierarchical category
+        // orderDataTableWrapper.setDefaultDisplayLength(orderDataTableWrapper.MAX_NUM_RETRIEVED_RECORD);
+        // orderDataTableWrapper.setALengthOrder([[orderDataTableWrapper.MAX_NUM_RETRIEVED_RECORD], ["All"]]);
+
+        // Create data table with options, column filters and localized messages
+        orderDataTableWrapper.initJDataTable();
+    });
+
+</script>
+
+<table id="@tblRecordsId" class="table table-hover table-nomargin table-bordered dataTable-columnfilter dataTable">
+    <thead>
+        <tr>
+
+            <th>ID</th>
+            <th class="hidden-350 hidden-480">Table</th>
+            <th class="hidden-350 hidden-480">Order StateId</th>
+            <th class="hidden-350 hidden-480">Created Date</th>
+
+            <th>Options</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+

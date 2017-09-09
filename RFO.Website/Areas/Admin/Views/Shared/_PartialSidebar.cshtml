@@ -1,0 +1,58 @@
+﻿@using RFO.Common.Utilities.Localization
+@{
+    var translationManager = (ITranslationManager)this.Session["TranslationManager"];
+}
+
+<div class="subnav">
+        <div class="subnav-title">
+            <a href="#" class='toggle-subnav'>
+                @*<i class="icon-angle-down"></i>*@
+                <span>Restaurant</span>
+            </a>
+        </div>
+        <ul class="subnav-menu">
+                    <li>
+                        <a href="@Url.Action("Index", "TableManagement")">Table</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "MenuManagement")">Status</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "ProductManagement")">Menu</a>
+                    </li>
+        </ul>
+    </div>
+    <div class="subnav">
+        <div class="subnav-title">
+            <a href="#" class='toggle-subnav'>    
+                @*<i class="icon-angle-down" ></i>*@          
+                <span>Order</span>
+                
+            </a>
+        </div>
+        <ul class="subnav-menu">
+            <li>
+                <a href="@Url.Action("Index", "OrderStateManagement")">Order State</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "TableOrderManagement")">Table Order</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "OrderManagement")">Bill</a>
+            </li>
+        </ul>
+    </div>
+    <div class="subnav">
+        <div class="subnav-title">
+            <a href="@Url.Action("Index", "UserManagement")" class='subnav-normal'>
+                <span>Staff</span>
+            </a>
+        </div>
+    </div>
+    @*<div class="subnav">
+        <div class="subnav-title">
+            <a href="@Url.Action("Index", "PromotionManagement")" class='subnav-normal'>
+                <span>Promotion</span>
+            </a>
+        </div>
+    </div>*@

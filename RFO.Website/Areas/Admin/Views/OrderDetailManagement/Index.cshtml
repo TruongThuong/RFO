@@ -1,0 +1,26 @@
+﻿@using RFO.Common.Utilities.Localization
+@{
+    var translationManager = (ITranslationManager)this.Session["TranslationManager"];
+    ViewBag.Title = "Order Detail";
+    Layout = "../Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="box box-color box-bordered">
+                <div class="box-title">
+                    <h3>
+                        <i class="icon-table"></i>
+                        Order
+                    </h3>
+                </div>
+                <div class="box-content nopadding">
+                    @Html.Partial("_PartialList")
+                </div>
+                <div id="processing-loader"></div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,255 @@
+﻿@using RFO.Common.Utilities.Localization
+@using RFO.MetaData
+@model Int32
+@{
+    var userId = Model;
+    var translationManager = (ITranslationManager)this.Session["TranslationManager"];
+}
+
+<script type="text/javascript">
+
+    /**
+     * Provides APIs to get/set data in server side
+     */
+    var adminUserCRUD = new ajaxCrudJS();
+
+    /**
+     * Fix issue: CKEditor submitting empty content to the form.
+     */
+    function setCKContentFunc() {
+
+
+    };
+    
+    /**
+     * Build update request context accoring serialized form values
+     */
+    function buildUpdateRequestContextFunc(formValues) {
+        var updateRequestContext = {
+            Record: {
+
+                UserName: formValues["UserName"],
+                Password: formValues["Password"],
+                Email: formValues["Email"],
+                FullName: formValues["FullName"],
+                Phone: formValues["Phone"],
+                Address: formValues["Address"],
+                AvatarFile: formValues["AvatarFile"],
+
+            }
+        };
+
+        if ('@userId' != '-1') {
+            updateRequestContext.Record.UserId = formValues["UserId"];
+        }
+
+        if (formValues["IsActive"] != null) { // Active
+            updateRequestContext.Record.IsActive = (formValues["IsActive"] == "on" ? true : false)
+        } else { // Deactive
+            updateRequestContext.Record.IsActive = false;
+        }
+
+        return updateRequestContext;
+    }
+
+    /**
+     * Register to update record
+     */
+    function registerUpdateRecord() {
+        // Using jquery validation plugin (jquery.validate.js) to validate
+        var updateType = adminUserCRUD.INSERT_UPDATE_TYPE;
+        var ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/User/Insert";
+
+        // Determine update mode
+        if ('@userId' != '-1') {
+            updateType = adminUserCRUD.MODIFY_UPDATE_TYPE;
+            ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/User/Update";
+        }
+
+        // Validation rules, using jquery validation plugin (jquery.validate.js) to validate
+        var validationRules = {
+
+            UserName: { required: true, remote: { url: "@AppConstants.WebAPIAddressUrl" + "/Api/User/IsNotExist" } }
+
+        };
+
+        // Validation messages
+        var validationMsgs = {
+
+            UserName: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            Password: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            Email: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            FullName: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            Phone: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            Address: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+
+        };
+
+        // Set parameters for updating
+        adminUserCRUD.setUpdateType(updateType);
+        adminUserCRUD.setAjaxUrl(ajaxUrl);
+        adminUserCRUD.setValidationRules(validationRules);
+        adminUserCRUD.setValidationMsgs(validationMsgs);
+        adminUserCRUD.setUpdateFrm($("#frmRecord"));
+        adminUserCRUD.setDlgModel($("#user-box-dlg"));
+        adminUserCRUD.setCKContentFunc(setCKContentFunc);
+        adminUserCRUD.setBuildUpdateRequestContextFunc(buildUpdateRequestContextFunc);
+        adminUserCRUD.setAddedRecordIdFunc(function (record) {
+            return record.UserId;
+        });
+
+        // Update record
+        adminUserCRUD.onUpdateRecord();
+    };
+
+    /**
+     * Load User detail
+     */
+    function loadUserDetail() {
+        $.ajax({
+            dataType: 'json',
+            url: "@AppConstants.WebAPIAddressUrl" + "/Api/User/SelectByID",
+            type: "GET",
+            data: { id: "@userId" }
+        }).done(function () {
+        }).complete(function () {
+        }).success(function (response) {
+            if (response.Result) {
+                var record = response.Record;
+
+                $("#UserId").val(record.UserId);
+                $("#UserName").val(record.UserName);
+                $("#Password").val(record.Password);
+                $("#Email").val(record.Email);
+                $("#FullName").val(record.FullName);
+                $("#Phone").val(record.Phone);
+                $("#Address").val(record.Address);
+
+                $("#IsActive").iCheck(record.IsActive ? 'check' : 'uncheck');
+
+
+                $("#AvatarFileSrc").attr("src", '@AppConstants.WebAPIAddressUrl' + '/Api/User/GetImage?filename=' + record.AvatarFile);
+
+            } else {
+                app.logger.error(response.Description);
+            }
+        });
+    };
+
+    $(document).ready(function () {
+
+        // Using iCheck plugin (jquery.icheck.min.js) to customize checkbox
+        icheck();
+
+
+        // Format UserId field
+        $("#UserId").number(true, 0);
+
+        // Register to update record
+        registerUpdateRecord();
+
+        if ('@userId' != '-1') { // -1: Insert mode - otherwise: Update mode
+            setTimeout(function () { // Wait timeout to makesure all controls has been initialized
+                loadUserDetail();
+
+            }, 500);
+        } else {
+            setTimeout(function () { // Wait timeout to makesure all controls has been initialized
+
+            }, 500);
+        }
+    });
+
+</script>
+
+<form id="frmRecord" action="#" method="POST" class='form-horizontal form-bordered'>
+
+    @if (userId != -1)
+    {
+    <div class="control-group">
+        <label for="UserId" class="control-label">ID</label>
+        <div class="controls">
+            <input type="text" readonly="readonly" name="UserId" id="UserId" placeholder="..."
+                   class="input-xlarge" data-rule-required="true"
+                   value="@userId">
+        </div>
+    </div>
+    }
+    <div class="control-group">
+        <label for="UserName" class="control-label">UserName</label>
+        <div class="controls">
+            <input type="text" name="UserName" id="UserName" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="Password" class="control-label">Password</label>
+        <div class="controls">
+            <input type="text" name="Password" id="Password" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="Email" class="control-label">Email</label>
+        <div class="controls">
+            <input type="text" name="Email" id="Email" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="IsActive" class="control-label">IsActive</label>
+        <div class="controls">
+            <div class="check-line">
+                <input type="checkbox" name="IsActive" id="IsActive" class='icheck-me'
+                       data-skin="square" data-color="blue" />
+            </div>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="FullName" class="control-label">FullName</label>
+        <div class="controls">
+            <input type="text" name="FullName" id="FullName" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="Phone" class="control-label">Phone</label>
+        <div class="controls">
+            <input type="text" name="Phone" id="Phone" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="Address" class="control-label">Address</label>
+        <div class="controls">
+            <input type="text" name="Address" id="Address" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+    </div>
+    <div class="control-group hidden">
+        <label for="AvatarFile" class="control-label"></label>
+        <div class="controls">
+            <div class="fileupload fileupload-new" data-provides="fileupload">
+                <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
+                    <img id=AvatarFileSrc name=AvatarFileSrc alt="" />
+                </div>
+                <div class="fileupload-preview fileupload-exists thumbnail" 
+                     style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
+                <div>
+                    <span class="btn btn-file">
+                        <span class="fileupload-new">Picture</span>
+                        <span class="fileupload-exists">Change</span>
+                        <input type="file" name="AvatarFile" id="AvatarFile" />
+                    </span>
+                    <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</form>
+

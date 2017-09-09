@@ -1,0 +1,283 @@
+﻿@using RFO.Common.Utilities.Localization
+@using RFO.MetaData
+@model dynamic
+@{
+    var orderDetailId = (int)Model.OrderDetailId;
+    var tableId = (int)Model.TableId;
+    var translationManager = (ITranslationManager)this.Session["TranslationManager"];
+}
+
+<script type="text/javascript">
+
+    /**
+     * Provides APIs to get/set data in server side
+     */
+    var adminOrderDetailCRUD = new ajaxCrudJS();
+
+    /**
+     * Fix issue: CKEditor submitting empty content to the form.
+     */
+    function setCKContentFunc() {
+
+
+    };
+
+    /**
+     * Build update request context accoring serialized form values
+     */
+    function buildUpdateRequestContextFunc(formValues) {
+        var updateRequestContext = {
+            Record: {
+
+                TableId: @tableId,
+                ProductId: formValues["ProductId"],
+                Quantity: formValues["Quantity"],
+                Price: formValues["Price"],
+
+            }
+        };
+
+        if ('@orderDetailId' != '-1') {
+            updateRequestContext.Record.OrderDetailId = formValues["OrderDetailId"];
+        }
+
+
+        return updateRequestContext;
+    }
+
+    /**
+     * Register to update record
+     */
+    function registerUpdateRecord() {
+        // Using jquery validation plugin (jquery.validate.js) to validate
+        var updateType = adminOrderDetailCRUD.INSERT_UPDATE_TYPE;
+        var ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/OrderDetail/Insert";
+
+        // Determine update mode
+        if ('@orderDetailId' != '-1') {
+            updateType = adminOrderDetailCRUD.MODIFY_UPDATE_TYPE;
+            ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/OrderDetail/Update";
+        }
+
+        // Validation rules, using jquery validation plugin (jquery.validate.js) to validate
+        var validationRules = {
+
+
+        };
+
+        // Validation messages
+        var validationMsgs = {
+            Product: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            Quantity: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+            //Price: { required: "@Html.Raw(translationManager.Translate("InputRequired"))" },
+
+        };
+
+        // Set parameters for updating
+        adminOrderDetailCRUD.setUpdateType(updateType);
+        adminOrderDetailCRUD.setAjaxUrl(ajaxUrl);
+        adminOrderDetailCRUD.setValidationRules(validationRules);
+        adminOrderDetailCRUD.setValidationMsgs(validationMsgs);
+        adminOrderDetailCRUD.setUpdateFrm($("#frmRecord"));
+        adminOrderDetailCRUD.setDlgModel($("#orderDetail-box-dlg"));
+        adminOrderDetailCRUD.setCKContentFunc(setCKContentFunc);
+        adminOrderDetailCRUD.setBuildUpdateRequestContextFunc(buildUpdateRequestContextFunc);
+        adminOrderDetailCRUD.setAddedRecordIdFunc(function (record) {
+            return record.OrderDetailId;
+        });
+
+        // Update record
+        adminOrderDetailCRUD.onUpdateRecord();
+    };
+
+    /**
+     * Load OrderDetail detail
+     */
+    function loadOrderDetailDetail() {
+        $.ajax({
+            dataType: 'json',
+            url: "@AppConstants.WebAPIAddressUrl" + "/Api/OrderDetail/SelectByID",
+            type: "GET",
+            data: { id: "@orderDetailId" }
+        }).done(function () {
+        }).complete(function () {
+        }).success(function (response) {
+            if (response.Result) {
+                var record = response.Record;
+
+                $("#OrderDetailId").val(record.OrderDetailId);
+                $("#Quantity").val(record.Quantity);
+                $("#Price").val(record.Price);
+
+
+
+
+                // Load Order list
+                $("#SelectedOrderIds").val(record.OrderId);
+
+                // Load Product list
+                $("#SelectedProductIds").val(record.ProductId);
+
+            } else {
+                app.logger.error(response.Description);
+            }
+        });
+    };
+
+    @*/**
+     * Load Orders
+     */
+    function loadOrders() {
+        var ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/Order/SelectAll";
+        $.ajax({
+            dataType: 'json',
+            url: ajaxUrl,
+            type: "GET",
+        }).done(function () {
+        }).complete(function () {
+        }).success(function (response) {
+            if (response.Result) {
+                $.each(response.Records, function (i, record) {
+                    $("#OrderId").append('<option value="' + record.OrderId + '">' + record.Name + '</option>');
+                });
+                // Load selected criteria has been selected in the previous searching
+                var selectedOrderIds = $("#SelectedOrderIds").val().split(",");
+                $("#OrderId").select2("val", selectedOrderIds);
+            } else {
+                app.logger.error(response.Description);
+            }
+        });
+    };*@
+
+    /**
+     * Load Products
+     */
+    function loadProducts() {
+        var ajaxUrl = "@AppConstants.WebAPIAddressUrl" + "/Api/Product/SelectAll";
+        $.ajax({
+            dataType: 'json',
+            url: ajaxUrl,
+            type: "GET",
+        }).done(function () {
+        }).complete(function () {
+        }).success(function (response) {
+            if (response.Result) {
+                $.each(response.Records, function (i, record) {
+                    $("#ProductId").append('<option value="' + record.ProductId + '">' + record.Name + '</option>');
+                    $("#Price").append('<option value="' + record.Price + '">' + record.Price + '</option>');
+                });
+                // Load selected criteria has been selected in the previous searching
+                var selectedProductIds = $("#SelectedProductIds").val().split(",");
+                //var selectedprices = $("#Selectedprices").val().split(",");
+                $("#ProductId").select2("val", selectedProductIds);
+            } else {
+                app.logger.error(response.Description);
+            }
+        });
+    };
+
+    $(document).ready(function () {
+
+        // Using iCheck plugin (jquery.icheck.min.js) to customize checkbox
+        icheck();
+
+
+        // Format OrderDetailId field
+        $("#OrderDetailId").number(true, 0);
+        // Format OrderId field
+        $("#OrderId").number(true, 0);
+        // Format ProductId field
+        $("#ProductId").number(true, 0);
+        // Format Quantity field
+        $("#Quantity").number(true, 0);
+        // Format Price field
+        $("#Price").number(true, 0);
+
+        // Initialize Select2 on the elements that you want to make multiple selects
+        $("#OrderId").select2();
+
+        // Initialize Select2 on the elements that you want to make multiple selects
+        $("#ProductId").select2();
+
+        // Register to update record
+        registerUpdateRecord();
+
+        if ('@orderDetailId' != '-1') { // -1: Insert mode - otherwise: Update mode
+            setTimeout(function () { // Wait timeout to makesure all controls has been initialized
+                loadOrderDetailDetail();
+
+                //loadOrders();
+
+                loadProducts();
+
+            }, 500);
+        } else {
+            setTimeout(function () { // Wait timeout to makesure all controls has been initialized
+
+                //loadOrders();
+
+                loadProducts();
+
+            }, 500);
+        }
+    });
+
+</script>
+
+<form id="frmRecord" action="#" method="POST" class='form-horizontal form-bordered'>
+
+    @if (orderDetailId != -1)
+    {
+        <div class="control-group hidden">
+            <label for="OrderDetailId" class="control-label">Order Detail</label>
+            <div class="controls">
+                <input type="text" readonly="readonly" name="OrderDetailId" id="OrderDetailId" placeholder="..."
+                       class="input-xlarge" data-rule-required="true"
+                       value="@orderDetailId">
+            </div>
+        </div>
+    }
+    <div class="control-group hidden">
+        <label for="OrderId" class="control-label">Order</label>
+        <div class="controls">
+            <select name="OrderId" id="OrderId" class='select2-me input-xlarge'></select>
+            <input type="hidden" name="SelectedOrderIds" id="SelectedOrderIds" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="ProductId" class="control-label">Product</label>
+        <div class="controls">
+            <select name="ProductId" id="ProductId" class='select2-me input-xlarge'></select>
+            <input type="hidden" name="SelectedProductIds" id="SelectedProductIds" />
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="Total" class="control-label">Total</label>
+        <div class="controls">
+            <input name="Total" id="Total" placeholder="..."
+                   class="input-xlarge" data-rule-required="true">
+        </div>
+        </div>
+
+        <div class="control-group">
+            <label for="Quantity" class="control-label">Quantity</label>
+            <div class="controls">
+                <input name="Quantity" id="Quantity" placeholder="..."
+                       class="input-xlarge" data-rule-required="true">
+            </div>
+        </div>
+        <div class="control-group hidden">
+            <label for="Price" class="control-label">Price</label>
+            <div class="controls">
+                <input type="text" name="Price" id="Price" placeholder="..."
+                       class="input-xlarge" data-rule-required="true">
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+</form>
+

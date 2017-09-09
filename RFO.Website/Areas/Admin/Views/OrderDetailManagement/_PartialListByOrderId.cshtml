@@ -1,0 +1,144 @@
+﻿@using RFO.Common.Utilities.Localization
+@using RFO.Common.Utilities.Pattern
+@using RFO.MetaData;
+@model dynamic
+@{
+    var selectUrl = AppConstants.WebAPIAddressUrl + "/Api/OrderDetail/Select";
+    var tblRecordsId = "tblOrderDetailRecords";
+    var translationManager = (ITranslationManager)this.Session["TranslationManager"];
+    ViewBag.Title = "Order Detail";
+    var orderId = (int)Model.OrderId;
+    var orderStateId = (int)Model.OrderStateId;
+}
+
+<script type="text/javascript">
+
+    /**
+     * Provides APIs to get/set data in server side
+     */
+    var adminOrderDetailCRUD = new ajaxCrudJS();
+    var orderDetailDataTableWrapper = new jDataTableWapperJS();
+
+    /**
+     * Initialize view
+     */
+    $(document).ready(function () {
+        // Defines parameters for data table initialization
+        var selectUrl = "@selectUrl";
+        var localizedMessages = {
+            "sSearch": "@*@Html.Raw(translationManager.Translate("sSearch"))*@",
+            "sInfo": "@*@Html.Raw(translationManager.Translate("sInfo"))*@",
+            "sLengthMenu": "@*@Html.Raw(translationManager.Translate("sLengthMenu"))*@",
+            "sSearchKeyword": "@*@Html.Raw(translationManager.Translate("sSearchKeyword"))*@",
+            "sAddNew": "@*@Html.Raw(translationManager.Translate("sAddNew"))*@",
+            "sAdvanceSearch": "@*@Html.Raw(translationManager.Translate("sAdvanceSearch"))*@",
+            "sColVis": "@*@Html.Raw(translationManager.Translate("sColVis"))*@"
+        };
+        var aoColumnDefs = [
+            {
+                "targets": [0, 1],
+                "visible": false
+            },
+            {
+                "targets": [0],
+                "render": function (data, type, row) {
+                    return $.number(row.OrderDetailId);
+                }
+            },
+            {
+                "targets": [1],
+                "render": function (data, type, row) {
+                    return row.OrderId;
+                }
+            },
+            {
+                "targets": [2],
+                "render": function (data, type, row) {
+                    return row.Product.Name;
+                }
+            },
+            {
+                "targets": [3],
+                "render": function (data, type, row) {
+                    return $.number(row.Quantity);
+                }
+            },
+            {
+                "targets": [4],
+                "render": function (data, type, row) {
+                    return $.number(row.Price);
+                }
+            },
+            {
+                "targets": [5],
+                "render": function (data, type, row) {
+                    return $.number(row.Quantity * row.Price);
+                }
+            },
+
+        ];
+        var aoColumns = [
+
+            { "index": [0], "mData": "OrderDetailId" },
+            { "index": [1], "mData": "OrderId", "bSortable": false, "sClass": "hidden-350 hidden-480" },
+            { "index": [2], "mData": "Product.Name", "bSortable": false, "sClass": "hidden-350 hidden-480" },
+            { "index": [3], "mData": "Quantity", "bSortable": false, "sClass": "hidden-350 hidden-480" },
+            { "index": [4], "mData": "Price", "bSortable": false, "sClass": "hidden-350 hidden-480" },
+            { "index": [5], "mData": "Total", "bSortable": false, "sClass": "hidden-350 hidden-480" },
+        ];
+
+        var fnCreatedRow = function (nRow, aData, iDataIndex) {
+            // Create row-id attribute
+            $(nRow).attr("row-id", aData.OrderDetailId);
+        };
+
+        var fnDrawCallback = function () {
+
+
+
+        };
+
+        // Set parameters to initialize jquery datatable
+        orderDetailDataTableWrapper.setSelectUrl(selectUrl);
+
+        orderDetailDataTableWrapper.setNeedDisplayAddNewBtn(false);
+
+        orderDetailDataTableWrapper.setLocalizedMessages(localizedMessages);
+        orderDetailDataTableWrapper.setSrcTable($("#@tblRecordsId"));
+        orderDetailDataTableWrapper.setAoColumns(aoColumns);
+        orderDetailDataTableWrapper.setAoColumnDefs(aoColumnDefs);
+        orderDetailDataTableWrapper.setFnCreatedRow(fnCreatedRow);
+        orderDetailDataTableWrapper.setFnDrawCallback(fnDrawCallback);
+        orderDetailDataTableWrapper.setNeedDisplayColVis(false);
+
+        // Set search foreign keys
+        var searchForeignKeys = [];
+        searchForeignKeys.push({ key: 'OrderIds', value: '@orderId' });
+        //searchForeignKeys.push({ key: 'OrderStateIds', value: '@orderStateId' });
+        orderDetailDataTableWrapper.setSearchForeignKeys(searchForeignKeys);
+
+        // Two below options will be used for hierarchical category
+        // orderDetailDataTableWrapper.setDefaultDisplayLength(orderDetailDataTableWrapper.MAX_NUM_RETRIEVED_RECORD);
+        // orderDetailDataTableWrapper.setALengthOrderDetail([[orderDetailDataTableWrapper.MAX_NUM_RETRIEVED_RECORD], ["All"]]);
+
+        // Create data table with options, column filters and localized messages
+        orderDetailDataTableWrapper.initJDataTable();
+    });
+
+</script>
+
+<table id="@tblRecordsId" class="table table-hover table-nomargin table-bordered dataTable-columnfilter dataTable">
+    <thead>
+        <tr>
+
+            <th>OrderDetailID</th>
+            <th class="hidden-350 hidden-480">OrderID</th>
+            <th class="hidden-350 hidden-480">Product</th>
+            <th class="hidden-350 hidden-480">Quantity</th>
+            <th class="hidden-350 hidden-480">Price</th>
+            <th class="hidden-350 hidden-480">Total</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
